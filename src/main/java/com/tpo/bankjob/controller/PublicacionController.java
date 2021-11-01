@@ -1,42 +1,37 @@
 package com.tpo.bankjob.controller;
 
+import static lombok.AccessLevel.PACKAGE;
+import static lombok.AccessLevel.PRIVATE;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.tpo.bankjob.model.Publicacion;
-import com.tpo.bankjob.model.repository.EmpresaRepository;
-import com.tpo.bankjob.model.repository.PublicacionRepository;
 import com.tpo.bankjob.model.vo.PublicacionVO;
 
-@Controller
-@Scope("singleton")
-@RequestMapping(value="/publicacion")
-public class PublicacionController {
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
+
+@RestController
+@RequestMapping("/publicacion")
+@FieldDefaults(level = PRIVATE, makeFinal = true)
+@AllArgsConstructor(access = PACKAGE)
+final class PublicacionController {
 	
+	@NonNull
 	@Autowired
-	private Publicacion publicacion;
-	
-	private PublicacionController () {}
-	
-	@Autowired
-	EmpresaRepository empresaRepository;
-	
-	@Autowired
-	PublicacionRepository publicacionRepository;
+	Publicacion publicacion;
 		
-	/**
-	 * method that adds a new publication for an existing empresa
-	 * @param empresaVO
-	 * @param publicacionVO
-	 */
-	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody PublicacionVO addPublicacion(@RequestBody PublicacionVO publicacionVo,
+	//@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
+	@PostMapping("/add")
+	@ResponseBody PublicacionVO addPublicacion(
+			@RequestBody PublicacionVO publicacionVo,
 			BindingResult bindingResult) {
 		return publicacion.addPublicacion(publicacionVo);
 	}

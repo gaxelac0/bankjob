@@ -27,7 +27,7 @@ public class PublicacionVO implements Serializable {
 	
 	@Column(name = "id_empresa")
 	@JsonProperty("id_empresa")
-	private Long idEmpresa;
+	private String idEmpresa;
 	
 	@Column(name = "titulo")
 	@JsonProperty("titulo")
@@ -61,7 +61,8 @@ public class PublicacionVO implements Serializable {
 	public PublicacionVO() {}
 		
 	// constructor with all the fields
-	public PublicacionVO(Long idEmpresa, String titulo, String descripcion, ModalidadEnum modalidad, TipoTrabajoEnum tipoTrabajo,
+	public PublicacionVO(String idEmpresa, String titulo, String descripcion, 
+			ModalidadEnum modalidad, TipoTrabajoEnum tipoTrabajo,
 			String lugar, String categoria, double sueldoOfrecido) {
 		super();
 		this.idEmpresa = idEmpresa;
@@ -130,11 +131,11 @@ public class PublicacionVO implements Serializable {
 		return this.id == other.getId();
 	}
 
-	public Long getIdEmpresa() {
+	public String getIdEmpresa() {
 		return idEmpresa;
 	}
 
-	public void setIdEmpresa(Long idEmpresa) {
+	public void setIdEmpresa(String idEmpresa) {
 		this.idEmpresa = idEmpresa;
 	}
 	

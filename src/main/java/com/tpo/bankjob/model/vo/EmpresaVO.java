@@ -1,51 +1,67 @@
 package com.tpo.bankjob.model.vo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @Entity
 @Table(name = "empresa")
 @JsonRootName(value = "empresa")
-public class EmpresaVO {
-	
+public class EmpresaVO implements UserDetails {
+
+	private static final long serialVersionUID = 4384739614806100984L;
+
 	@JsonProperty("id")
-	private @Id @GeneratedValue Long id;
+	@Column(name = "id")
+	private @Id String id;
 	
 	@JsonProperty("razon_social")
 	@Column(name = "razon_social")
 	private String razonSocial;
 	
-	@JsonIgnore
+	@JsonProperty("publicaciones")
+	@Column(name = "publicaciones")
 	@OneToMany(mappedBy = "idEmpresa",fetch = FetchType.EAGER)
 	private List<PublicacionVO> publicaciones;
 	
-	public EmpresaVO () {
-		this.razonSocial = "";
+	@JsonProperty("username")
+	@Column(name = "username")
+	private String username;
+	
+	@JsonProperty("password")
+	@Column(name = "password")
+	private String password;
+	
+	public EmpresaVO() {
 		this.publicaciones = new ArrayList<>();
 	}
-		
-	public EmpresaVO(String razonSocial) {
+
+	public EmpresaVO(String id, String username, String password) {
 		this();
-		this.razonSocial = razonSocial;
+		this.id = id;
+		this.razonSocial = "";
+		this.username = username;
+		this.password = password;
 	}
 	
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 	
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -79,5 +95,48 @@ public class EmpresaVO {
 		return this.id == other.getId();
 	}
 
+	public String getUsername() {
+		return username;
+	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return new ArrayList<>();
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

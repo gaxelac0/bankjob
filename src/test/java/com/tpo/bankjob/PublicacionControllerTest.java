@@ -1,6 +1,7 @@
 package com.tpo.bankjob;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ public class PublicacionControllerTest {
 	public void givenValidEmpresaAndPublicacionVoWhenAddPublicacionThenSaveItSucessfully() {
 		
 		// given
-		EmpresaVO empresaVO = new EmpresaVO("Empresa1");
+		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(), "empresa1", "1234");
 		
 		empresaRepository.saveAndFlush(empresaVO);
 		

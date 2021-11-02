@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "9ee66f2e-5e59-4808-a9f5-8976b9daf6ec",
+		"name": "bankjob",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "publicacion/add",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "empresa1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"titulo\":\"pepe\",\r\n    \"descripcion\":\"pepe\",\r\n    \"modalidad\":\"1\",\r\n    \"tipo_trabajo\":\"1\",\r\n    \"lugar\":\"pepe\",\r\n    \"categoria\":\"pepe\",\r\n    \"sueldo_ofrecido\": \"100\",\r\n    \"fecha_vigencia\": \"2021-11-02@13:17:00.205-03:00\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/publicacion/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"publicacion",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "public/users/empresa/register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"empresa2\",\r\n    \"password\": \"1234\",\r\n    \"razon_social\":\"Empresa S.R.L\",\r\n    \"publicaciones\":[]\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/public/users/empresa/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"public",
+						"users",
+						"empresa",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "public/users/login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"empresa1\",\r\n    \"password\": \"1234\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/public/users/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"public",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "public/users/postulante/register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"postulante2\",\r\n    \"password\": \"1234\",\r\n    \"nombre\": \"Postu\",\r\n    \"apellido\":\"Lante\",\r\n    \"fecha_nacimiento\": \"01-01-2001\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/public/users/postulante/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"public",
+						"users",
+						"postulante",
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

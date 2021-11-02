@@ -6,16 +6,19 @@ import static lombok.AccessLevel.PRIVATE;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tpo.bankjob.model.exception.AlreadyRegisteredUserException;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.repository.PostulanteRepository;
+import com.tpo.bankjob.model.utils.CredentialsWrapper;
+import com.tpo.bankjob.model.utils.LoginResponseWrapper;
 import com.tpo.bankjob.model.vo.EmpresaVO;
 import com.tpo.bankjob.model.vo.PostulanteVO;
 import com.tpo.bankjob.security.UserAuthenticationService;
@@ -77,13 +80,22 @@ final class PublicUsersController {
 		return postulanteVO.getId();
 	}
 
-	// TODO: rework login to use repo
 	@PostMapping("/login")
-	String login(
-			@RequestParam("username") final String username,
-			@RequestParam("password") final String password) {
-		return authentication
-				.login(username, password)
-				.orElseThrow(() -> new RuntimeException("invalid login and/or password"));
+	@ResponseBody LoginResponseWrapper login(@RequestBody CredentialsWrapper credentials) {
+		
+		UserDetails user = authentication.login(
+				credentials.username, credentials.password);
+		
+		String uuid;
+		boolean isEmpresa = false;
+		if(user instanceof EmpresaVO) {
+			uuid = ((EmpresaVO)user).getId();
+			isEmpresa = true;
+		}
+		else {
+			uuid = ((PostulanteVO)user).getId();
+		}
+		
+		return new LoginResponseWrapper(uuid, isEmpresa);
 	}
 }

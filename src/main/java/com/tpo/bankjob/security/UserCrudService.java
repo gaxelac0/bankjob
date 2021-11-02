@@ -2,11 +2,13 @@ package com.tpo.bankjob.security;
 
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 public interface UserCrudService {
 
-	Object save(String id, Object user);
+	UserDetails save(String id, UserDetails user);
 
-	Optional<Object> find(String id);
+	Optional<UserDetails> find(String id);
 
-	Optional<Object> findByUsername(String username);
+	Optional<UserDetails> findByUsername(String username);
 }

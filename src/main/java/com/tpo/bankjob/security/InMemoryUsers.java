@@ -4,7 +4,7 @@ import static java.util.Optional.ofNullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,22 +13,25 @@ import org.springframework.stereotype.Service;
 @Service
 final class InMemoryUsers implements UserCrudService {
 
-	Map<String, Object> users = new HashMap<>();
+	Map<String, UserDetails> users = new HashMap<>();
 
 	@Override
-	public Object save(String id, Object user) {
+	public UserDetails save(String id, UserDetails user) {
 		return users.put(id, user);
 	}
 
 	@Override
-	public Optional<Object> find(final String id) {
+	public Optional<UserDetails> find(final String id) {
 		return ofNullable(users.get(id));
 	}
 
 	@Override
-	public Optional<Object> findByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public Optional<UserDetails> findByUsername(String username) {
+		
+		return users.entrySet().stream()
+		.filter((a) -> a.getValue().getUsername().equalsIgnoreCase(username))
+		.findAny()
+		.map((t) -> t.getValue());
 	}
 
 //	@Override

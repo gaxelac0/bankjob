@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-class InvalidUserTypeAdvicer {	
+class InvalidCredentialsAdvice {	
 
 	@ResponseBody
-	@ExceptionHandler(InvalidUserTypeException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	String invalidUserTypeHandler(InvalidUserTypeException ex) {
+	@ExceptionHandler(InvalidCredentialsException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	String invalidCredentialsHandler(InvalidCredentialsException ex) {
 		return ex.getMessage();
 	}
 }

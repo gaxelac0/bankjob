@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-class AlreadyRegisteredUserAdvicer {	
+class AlreadyRegisteredUserAdvice {	
 
 	@ResponseBody
 	@ExceptionHandler(AlreadyRegisteredUserException.class)

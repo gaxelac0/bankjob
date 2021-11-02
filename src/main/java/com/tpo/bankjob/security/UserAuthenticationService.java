@@ -2,6 +2,8 @@ package com.tpo.bankjob.security;
 
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 public interface UserAuthenticationService {
 
 	/**
@@ -9,9 +11,9 @@ public interface UserAuthenticationService {
 	 *
 	 * @param username
 	 * @param password
-	 * @return an {@link Optional} of a user when login succeeds
+	 * @return user {@link token} when login succeeds
 	 */
-	Optional<String> login(String username, String password);
+	UserDetails login(String username, String password);
 
 	/**
 	 * Finds a user by its dao-key.
@@ -19,15 +21,7 @@ public interface UserAuthenticationService {
 	 * @param token user dao key
 	 * @return
 	 */
-	Optional<Object> findByToken(String token);
-	
-	/**
-	 * Finds a user by its username
-	 *
-	 * @param username username
-	 * @return
-	 */
-	Optional<Object> findByUsername(String username);
+	Optional<UserDetails> findByToken(String token);
 
 	/**
 	 * Logs out the given input {@code user}.

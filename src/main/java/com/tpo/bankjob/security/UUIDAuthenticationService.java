@@ -4,9 +4,11 @@ import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
 import java.util.Optional;
-import java.util.UUID;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.tpo.bankjob.model.exception.InvalidCredentialsException;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -21,23 +23,20 @@ final class UUIDAuthenticationService implements UserAuthenticationService {
 	UserCrudService users;
 
 	@Override
-	public Optional<String> login(final String username, final String password) {
-		final String uuid = UUID.randomUUID().toString();
-		final User user = new User(uuid, username, password);
-
-		users.save(uuid, user);
-		return Optional.of(uuid);
+	public UserDetails login(final String username, final String password) 
+			throws InvalidCredentialsException {
+		
+		Optional<UserDetails> ret = users.findByUsername(username);
+		if(!ret.isPresent() || !ret.get().getPassword().equalsIgnoreCase(password)) {
+			throw new InvalidCredentialsException(); // TODO: exception
+		}
+		
+		return ret.get();
 	}
 
 	@Override
-	public Optional<Object> findByToken(final String token) {
+	public Optional<UserDetails> findByToken(final String token) {
 		return users.find(token);
-	}
-	
-	@Override
-	public Optional<Object> findByUsername(final String username) {
-		// TODO. implement user repository
-		return null;
 	}
 
 	@Override

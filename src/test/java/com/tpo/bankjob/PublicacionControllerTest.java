@@ -3,6 +3,7 @@ package com.tpo.bankjob;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.tpo.bankjob.model.vo.EmpresaVO;
 import com.tpo.bankjob.model.vo.ModalidadEnum;
 import com.tpo.bankjob.model.vo.PublicacionVO;
 import com.tpo.bankjob.model.vo.TipoTrabajoEnum;
+import com.tpo.bankjob.security.RequestTokenService;
 
 @SpringBootTest
 public class PublicacionControllerTest {
@@ -33,6 +35,7 @@ public class PublicacionControllerTest {
 		
 		// given
 		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(), "empresa1", "1234");
+		RequestTokenService.setRequestToken(empresaVO.getId()); // TODO corregir test? token?
 		
 		empresaRepository.saveAndFlush(empresaVO);
 		
@@ -43,10 +46,11 @@ public class PublicacionControllerTest {
 				TipoTrabajoEnum.PRESENCIAL, 
 				"Lugar",
 				"Categoria",
-				Double.valueOf(100));
+				Double.valueOf(100),
+				new DateTime());
 		
 		//  when
-		publicacion.addPublicacion(publicacionVO);
+		publicacion.addPublicacion(publicacionVO); // TODO corregir test? token?
 		
 		// then
 		EmpresaVO resultEmpresa = null;

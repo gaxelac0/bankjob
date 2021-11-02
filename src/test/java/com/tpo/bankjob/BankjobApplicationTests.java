@@ -85,7 +85,7 @@ class BankjobApplicationTests {
 	public void givenPublicacionPojonWhenDeserializeThenDeserializeSucessfully() throws IOException {
 
 		// given
-		PublicacionVO publicacionVO = new PublicacionVO();
+		PublicacionVO publicacionVO = new PublicacionVO(); // TODO fix test
 
 		// when
 		String deserialized = new ObjectMapper().writeValueAsString(publicacionVO);

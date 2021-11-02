@@ -2,13 +2,14 @@ package com.tpo.bankjob.model.vo;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -43,16 +44,17 @@ public class PostulanteVO implements UserDetails {
 	@Column(name = "apellido")
 	private String apellido;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", timezone="America/Buenos Aires")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@JsonProperty("fecha_nacimiento")
 	@Column(name = "fecha_nacimiento")
-	private Date fechaNacimiento;
+	private DateTime fechaNacimiento;
 	
 	public PostulanteVO() {}
 	
 	public PostulanteVO(String id, String username,
 			String password, String nombre, String apellido, 
-			Date fechaNacimiento) {
+			DateTime fechaNacimiento) {
 		this();
 		this.id = id;
 		this.username = username;
@@ -70,7 +72,7 @@ public class PostulanteVO implements UserDetails {
 		return apellido;
 	}
 
-	public Date getFechaNacimiento() {
+	public DateTime getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
@@ -106,7 +108,7 @@ public class PostulanteVO implements UserDetails {
 		this.apellido = apellido;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(DateTime fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 	
@@ -137,5 +139,5 @@ public class PostulanteVO implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
-	}
+	}	
 }

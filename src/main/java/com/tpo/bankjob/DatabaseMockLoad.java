@@ -1,7 +1,6 @@
 package com.tpo.bankjob;
 
-import java.util.Date;
-
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ public class DatabaseMockLoad {
 	@Autowired
 	UserCrudService users;
 
+	@SuppressWarnings("deprecation")
 	@Bean
 	CommandLineRunner initDatabase(PostulanteRepository postulanteRepository, EmpresaRepository empresaRepository) {
 
@@ -31,7 +31,7 @@ public class DatabaseMockLoad {
 			// TODO: cargar memoria
 			//////////////////////////// >>> Postulante
 			PostulanteVO postulanteVO = new PostulanteVO("postulante1", "postulante1", "1234",
-					"Postu", "Lante", new Date(2021, 11, 1));
+					"Postu", "Lante", new DateTime(2021, 11, 1, 0, 0));
 			users.save(postulanteVO.getId(), postulanteVO);
 			LOGGER.info("Preloading " + postulanteRepository.saveAndFlush(postulanteVO));
 	

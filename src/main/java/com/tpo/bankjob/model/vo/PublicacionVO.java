@@ -9,8 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.tpo.bankjob.model.state.EstadoPublicacion;
+import com.tpo.bankjob.model.state.EstadoPublicacionAbierto;
 
 @Entity
 @Table(name = "publicacion")
@@ -28,6 +34,16 @@ public class PublicacionVO implements Serializable {
 	@Column(name = "id_empresa")
 	@JsonProperty("id_empresa")
 	private String idEmpresa;
+	
+	@Column(name = "estado")
+	@JsonProperty("estado")
+	private EstadoPublicacion estado;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", timezone="America/Buenos Aires")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "fecha_vigencia")
+	@JsonProperty("fecha_vigencia")
+	private DateTime fechaVigencia;
 	
 	@Column(name = "titulo")
 	@JsonProperty("titulo")
@@ -57,14 +73,16 @@ public class PublicacionVO implements Serializable {
 	@JsonProperty("sueldo_ofrecido")
 	private double sueldoOfrecido;
 	
-	@SuppressWarnings("unused")
-	public PublicacionVO() {}
+	public PublicacionVO() {
+		this.estado = new EstadoPublicacionAbierto(this);
+	}
 		
 	// constructor with all the fields
 	public PublicacionVO(String idEmpresa, String titulo, String descripcion, 
 			ModalidadEnum modalidad, TipoTrabajoEnum tipoTrabajo,
-			String lugar, String categoria, double sueldoOfrecido) {
-		super();
+			String lugar, String categoria,
+			double sueldoOfrecido, DateTime fechaVigencia) {
+		this();
 		this.idEmpresa = idEmpresa;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
@@ -73,6 +91,7 @@ public class PublicacionVO implements Serializable {
 		this.lugar = lugar;
 		this.categoria = categoria;
 		this.sueldoOfrecido = sueldoOfrecido;
+		this.fechaVigencia = fechaVigencia;
 	}
 	
 	public Long getId() {
@@ -81,6 +100,22 @@ public class PublicacionVO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getIdEmpresa() {
+		return idEmpresa;
+	}
+
+	public void setIdEmpresa(String idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
+	
+	public EstadoPublicacion getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoPublicacion estado) {
+		this.estado = estado;
 	}
 	
 	public String getTitulo() {
@@ -130,13 +165,20 @@ public class PublicacionVO implements Serializable {
 	public boolean equals(PublicacionVO other) {
 		return this.id == other.getId();
 	}
-
-	public String getIdEmpresa() {
-		return idEmpresa;
-	}
-
-	public void setIdEmpresa(String idEmpresa) {
-		this.idEmpresa = idEmpresa;
-	}
 	
+	public boolean isOpen() {
+		return (this.estado instanceof EstadoPublicacionAbierto);
+	}
+
+	public DateTime getFechaVigencia() {
+		return fechaVigencia;
+	}
+
+	public void setFechaVigencia(DateTime fechaVigencia) {
+		this.fechaVigencia = fechaVigencia;
+	}
+
+	public PublicacionVO transicionar() {
+		return estado.transicionar(this);
+	}
 }

@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-@ConfigurationPropertiesScan("com.tpo.bankjob.conf")
+//@ConfigurationPropertiesScan("com.tpo.bankjob.conf")
 public class BankjobApplication {
 
 	public static void main(String[] args) {

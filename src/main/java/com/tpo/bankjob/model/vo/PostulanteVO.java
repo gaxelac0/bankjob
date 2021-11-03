@@ -2,10 +2,12 @@ package com.tpo.bankjob.model.vo;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -49,6 +51,9 @@ public class PostulanteVO implements UserDetails {
 	@JsonProperty("fecha_nacimiento")
 	@Column(name = "fecha_nacimiento")
 	private DateTime fechaNacimiento;
+	
+    @OneToMany(mappedBy = "postulante")
+    Set<PostulacionVO> postulaciones;
 	
 	public PostulanteVO() {}
 	

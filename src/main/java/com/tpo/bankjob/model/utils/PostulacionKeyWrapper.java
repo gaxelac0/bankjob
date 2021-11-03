@@ -1,0 +1,72 @@
+package com.tpo.bankjob.model.utils;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+@Component
+@Embeddable
+@JsonRootName(value = "id")
+public class PostulacionKeyWrapper implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -116116459282227011L;
+
+	@Column(name = "id_postulante")
+	@JsonProperty("id_postulante")
+	private String idPostulante;
+	
+	@Column(name = "id_publicacion")
+	@JsonProperty("id_publicacion")
+	private Long idPublicacion;
+	
+	public PostulacionKeyWrapper() {}
+
+	public PostulacionKeyWrapper(String idPostulante, Long idPublicacion) {
+		super();
+		this.idPostulante = idPostulante;
+		this.idPublicacion = idPublicacion;
+	}
+
+	public String getIdPostulante() {
+		return idPostulante;
+	}
+
+	public void setIdPostulante(String idPostulante) {
+		this.idPostulante = idPostulante;
+	}
+
+	public Long getIdPublicacion() {
+		return idPublicacion;
+	}
+
+	public void setIdPublicacion(Long idPublicacion) {
+		this.idPublicacion = idPublicacion;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(idPostulante, idPublicacion);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PostulacionKeyWrapper other = (PostulacionKeyWrapper) obj;
+		return Objects.equals(idPostulante, other.idPostulante) && Objects.equals(idPublicacion, other.idPublicacion);
+	}
+}

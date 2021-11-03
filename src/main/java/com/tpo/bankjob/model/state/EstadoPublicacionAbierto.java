@@ -17,9 +17,9 @@ public class EstadoPublicacionAbierto extends EstadoPublicacion {
 	private static final long serialVersionUID = 1940787522775270537L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(EstadoPublicacionAbierto.class);
 
-	@Autowired
-	@JsonIgnore
-    public GlobalProperties properties;
+	//@Autowired
+	//@JsonIgnore
+   // public GlobalProperties properties;
 
 	public EstadoPublicacionAbierto(PublicacionVO ctx) {
 		super(ctx);

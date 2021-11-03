@@ -1,12 +1,14 @@
 package com.tpo.bankjob.model.vo;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -76,11 +78,13 @@ public class PublicacionVO implements Serializable {
 	@JsonProperty("sueldo_ofrecido")
 	private double sueldoOfrecido;
 	
+    @OneToMany(mappedBy = "publicacion")
+    Set<PostulacionVO> postulaciones;
+	
 	public PublicacionVO() {
 		this.estado = new EstadoPublicacionAbierto(this);
 	}
-		
-	// constructor with all the fields
+
 	public PublicacionVO(String idEmpresa, String titulo, String descripcion, 
 			ModalidadEnum modalidad, TipoTrabajoEnum tipoTrabajo,
 			String lugar, String categoria,

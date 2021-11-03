@@ -1,5 +1,8 @@
 package com.tpo.bankjob.model;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +17,25 @@ public class Publicacion {
 
 	public Publicacion () {}
 	
-	public PublicacionVO addPublicacion(PublicacionVO publicacion) {
-		return publicacionDao.addPublicacion(publicacion);
+	public PublicacionVO add(PublicacionVO publicacion) {
+		
+		// TODO if publicacion.getTitulo() == null, generar uno
+		// titulo = generarTitulo();
+		// publicacion.setTitulo(titulo)
+		
+		// TODO generar imagen representativa y guardar en el disco
+		// publicacionVO deberia tener un URL a la imagen generada
+		// imageUri = generarImagen(); // BASE 64
+		// publicacion.setImageURI(imageUri)
+		
+		return publicacionDao.add(publicacion);
+	}
+
+	public Optional<PublicacionVO> get(Long id) {
+		return publicacionDao.get(id);
+	}
+
+	public List<PublicacionVO> findAll() {
+		return publicacionDao.findAll();
 	}
 }

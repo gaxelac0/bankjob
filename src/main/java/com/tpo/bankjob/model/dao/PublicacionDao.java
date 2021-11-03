@@ -1,5 +1,6 @@
 package com.tpo.bankjob.model.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class PublicacionDao {
 	@Autowired
 	EmpresaRepository empresaRepository;
 	
-	public PublicacionVO addPublicacion(PublicacionVO publicacionVO) {
+	public PublicacionVO add(PublicacionVO publicacionVO) {
 		
 		Optional<EmpresaVO> opt = empresaRepository.findById(RequestTokenService.getRequestToken());
 		if(!opt.isPresent()) {
@@ -39,6 +40,14 @@ public class PublicacionDao {
 		empresaRepository.saveAndFlush(empresaVO);
 		
 		return publicacionVO;
+	}
+
+	public Optional<PublicacionVO> get(Long id) {
+		return publicacionRepository.findById(id);
+	}
+
+	public List<PublicacionVO> findAll() {
+		return publicacionRepository.findAll();
 	}
 
 }

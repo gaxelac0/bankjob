@@ -11,13 +11,16 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.tpo.bankjob.model.state.EstadoPublicacion;
 import com.tpo.bankjob.model.state.EstadoPublicacionAbierto;
 
+@Component
 @Entity
 @Table(name = "publicacion")
 @JsonRootName(value = "publicacion")
@@ -35,8 +38,8 @@ public class PublicacionVO implements Serializable {
 	@JsonProperty("id_empresa")
 	private String idEmpresa;
 	
+	@JsonIgnore
 	@Column(name = "estado")
-	@JsonProperty("estado")
 	private EstadoPublicacion estado;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", timezone="America/Buenos Aires")

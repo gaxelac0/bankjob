@@ -50,7 +50,7 @@ public class PublicacionControllerTest {
 				new DateTime());
 		
 		//  when
-		publicacion.addPublicacion(publicacionVO); // TODO corregir test? token?
+		publicacion.add(publicacionVO); // TODO corregir test? token?
 		
 		// then
 		EmpresaVO resultEmpresa = null;

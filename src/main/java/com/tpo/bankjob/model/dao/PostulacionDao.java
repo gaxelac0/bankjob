@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tpo.bankjob.model.exception.AlreadyExistsPostulacionException;
+import com.tpo.bankjob.model.exception.InsufficientSkillsForPostulacionException;
 import com.tpo.bankjob.model.exception.InvalidPostulacionException;
 import com.tpo.bankjob.model.exception.PostulanteNotFoundException;
 import com.tpo.bankjob.model.exception.PublicacionNotFoundException;
 import com.tpo.bankjob.model.repository.PostulacionRepository;
 import com.tpo.bankjob.model.repository.PostulanteRepository;
 import com.tpo.bankjob.model.repository.PublicacionRepository;
+import com.tpo.bankjob.model.repository.SkillRepository;
+import com.tpo.bankjob.model.utils.PostulacionUtils;
 import com.tpo.bankjob.model.vo.PostulacionVO;
 import com.tpo.bankjob.security.RequestTokenService;
 import com.tpo.bankjob.security.UserCrudService;
@@ -28,6 +31,9 @@ public class PostulacionDao {
 	
 	@Autowired
 	PostulacionRepository postulacionRepository;
+	
+	@Autowired
+	SkillRepository skillRepository;
 
 	public PostulacionVO add(PostulacionVO postulacionVO) {
 		
@@ -56,18 +62,28 @@ public class PostulacionDao {
             return postulacionVO;
         })
         .orElseThrow(() -> new PostulanteNotFoundException(postulacionVO.getId().getIdPostulante()));
-		
+				
 		// la publicacion debe existir
 		publicacionRepository.findById(postulacionVO.getId().getIdPublicacion())
-		// la publicacion debe estar abierta
+		// la publicacion debe estar abierta // TODO throw exception publicacion abierta
 		.filter((p) -> p.isOpen())
-		// TODO los postulantes deben cumplir con las habilidades exigidas por la publicacion
-		//.filter((p) -> PostulacionUtils.matchHabilidades(p.getHabilidades(), postulacionVO.getPostulante().getHabilidades())) 
+
         .map(obj -> {        	
             postulacionVO.setPublicacion(obj);
             return postulacionVO;
         })
         .orElseThrow(() -> new PublicacionNotFoundException(postulacionVO.getId().getIdPublicacion()));
+		
+		
+		// TODO los postulantes deben cumplir con las habilidades exigidas por la publicacion
+		//.filter((p) -> PostulacionUtils.matchHabilidades(p.getSkills(), postulacionVO.getPostulante().getSkills())) 
+		//List<SkillVO> postulanteSkills = skillRepository.findAllByOwnerId(postulacionVO.getPostulante().getId());
+		//List<SkillVO> requiredSkills = skillRepository.findAllByOwnerId(postulacionVO.getPublicacion().getId().toString());
+		if(!PostulacionUtils.matchHabilidades(
+				postulacionVO.getPublicacion().getSkills(),
+				postulacionVO.getPostulante().getSkills())) {
+			throw new InsufficientSkillsForPostulacionException();
+		}
 	}
 
 }

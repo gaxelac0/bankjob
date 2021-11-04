@@ -17,7 +17,7 @@ public class Publicacion {
 
 	public Publicacion () {}
 	
-	public PublicacionVO add(PublicacionVO publicacion) {
+	public PublicacionVO add(PublicacionVO publicacionVO) {
 		
 		// TODO if publicacion.getTitulo() == null, generar uno
 		// titulo = generarTitulo();
@@ -28,10 +28,10 @@ public class Publicacion {
 		// imageUri = generarImagen(); // BASE 64
 		// publicacion.setImageURI(imageUri)
 		
-		return publicacionDao.add(publicacion);
+		return publicacionDao.add(publicacionVO);
 	}
 
-	public Optional<PublicacionVO> get(Long id) {
+	public Optional<PublicacionVO> get(String id) {
 		return publicacionDao.get(id);
 	}
 

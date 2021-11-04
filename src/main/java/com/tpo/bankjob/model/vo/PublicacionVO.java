@@ -1,10 +1,12 @@
 package com.tpo.bankjob.model.vo;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +36,7 @@ public class PublicacionVO implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	@JsonProperty("id")
-	private Long id;
+	private String id;
 	
 	@Column(name = "id_empresa")
 	@JsonProperty("id_empresa")
@@ -79,10 +81,17 @@ public class PublicacionVO implements Serializable {
 	private double sueldoOfrecido;
 	
     @OneToMany(mappedBy = "publicacion")
-    Set<PostulacionVO> postulaciones;
+    private List<PostulacionVO> postulaciones;
+    
+	@JsonProperty("skills")
+	@Column(name = "skills")	
+    @OneToMany(mappedBy = "ownerId", fetch = FetchType.EAGER)
+	private  List<SkillVO> skills;
 	
 	public PublicacionVO() {
 		this.estado = new EstadoPublicacionAbierto(this);
+		this.postulaciones = new ArrayList<>();
+		this.skills = new ArrayList<>();
 	}
 
 	public PublicacionVO(String idEmpresa, String titulo, String descripcion, 
@@ -101,11 +110,11 @@ public class PublicacionVO implements Serializable {
 		this.fechaVigencia = fechaVigencia;
 	}
 	
-	public Long getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	
@@ -183,6 +192,22 @@ public class PublicacionVO implements Serializable {
 
 	public void setFechaVigencia(DateTime fechaVigencia) {
 		this.fechaVigencia = fechaVigencia;
+	}
+
+	public List<PostulacionVO> getPostulaciones() {
+		return postulaciones;
+	}
+
+	public void setPostulaciones(List<PostulacionVO> postulaciones) {
+		this.postulaciones = postulaciones;
+	}
+
+	public List<SkillVO> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<SkillVO> skills) {
+		this.skills = skills;
 	}
 
 	public PublicacionVO transicionar() {

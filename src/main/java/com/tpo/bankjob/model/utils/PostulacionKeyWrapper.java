@@ -27,11 +27,11 @@ public class PostulacionKeyWrapper implements Serializable {
 	
 	@Column(name = "id_publicacion")
 	@JsonProperty("id_publicacion")
-	private Long idPublicacion;
+	private String idPublicacion;
 	
 	public PostulacionKeyWrapper() {}
 
-	public PostulacionKeyWrapper(String idPostulante, Long idPublicacion) {
+	public PostulacionKeyWrapper(String idPostulante, String idPublicacion) {
 		super();
 		this.idPostulante = idPostulante;
 		this.idPublicacion = idPublicacion;
@@ -45,11 +45,11 @@ public class PostulacionKeyWrapper implements Serializable {
 		this.idPostulante = idPostulante;
 	}
 
-	public Long getIdPublicacion() {
+	public String getIdPublicacion() {
 		return idPublicacion;
 	}
 
-	public void setIdPublicacion(Long idPublicacion) {
+	public void setIdPublicacion(String idPublicacion) {
 		this.idPublicacion = idPublicacion;
 	}
 

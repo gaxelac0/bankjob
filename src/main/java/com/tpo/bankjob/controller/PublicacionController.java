@@ -37,9 +37,9 @@ final class PublicacionController {
 	//@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
 	@PostMapping("/add")
 	@ResponseBody PublicacionVO add(
-			@RequestBody PublicacionVO publicacionVo,
+			@RequestBody PublicacionVO publicacionVO,
 			BindingResult bindingResult) {
-		return publicacion.add(publicacionVo);
+		return publicacion.add(publicacionVO);
 	}
 	
 	@GetMapping("/all")
@@ -57,7 +57,7 @@ final class PublicacionController {
 	
 	@GetMapping("/{id}")
 	@ResponseBody PublicacionVO getPublicacionById(
-			@PathVariable Long id) {
+			@PathVariable String id) {
 		return publicacion.get(id).map((p) -> p).orElseThrow(() -> new PublicacionNotFoundException(id));
 	}
 	

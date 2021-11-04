@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.tpo.bankjob.model.vo.PublicacionVO;
 
 @Repository
-public interface PublicacionRepository extends JpaRepository<PublicacionVO, Long>{
+public interface PublicacionRepository extends JpaRepository<PublicacionVO, String>{
 
 }

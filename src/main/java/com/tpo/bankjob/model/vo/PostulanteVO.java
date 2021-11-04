@@ -2,10 +2,11 @@ package com.tpo.bankjob.model.vo;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -53,9 +54,18 @@ public class PostulanteVO implements UserDetails {
 	private DateTime fechaNacimiento;
 	
     @OneToMany(mappedBy = "postulante")
-    Set<PostulacionVO> postulaciones;
+    private List<PostulacionVO> postulaciones;
+    
+    
+	@JsonProperty("skills")
+	@Column(name = "skills")	
+    @OneToMany(mappedBy = "ownerId", fetch = FetchType.EAGER)
+    private List<SkillVO> skills;
 	
-	public PostulanteVO() {}
+	public PostulanteVO() {
+		this.postulaciones = new ArrayList<>();
+		this.skills = new ArrayList<>();
+	}
 	
 	public PostulanteVO(String id, String username,
 			String password, String nombre, String apellido, 
@@ -115,6 +125,22 @@ public class PostulanteVO implements UserDetails {
 
 	public void setFechaNacimiento(DateTime fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+	
+	public List<PostulacionVO> getPostulaciones() {
+		return postulaciones;
+	}
+
+	public void setPostulaciones(List<PostulacionVO> postulaciones) {
+		this.postulaciones = postulaciones;
+	}
+
+	public List<SkillVO> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<SkillVO> skills) {
+		this.skills = skills;
 	}
 	
 	@Override

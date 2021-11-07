@@ -6,92 +6,191 @@
 	},
 	"item": [
 		{
-			"name": "publicacion/add",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"content-type": true
-				}
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "empresa1",
-							"type": "string"
+			"name": "reporte",
+			"item": [
+				{
+					"name": "01/{mmYYYY}",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"content-type": true
 						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"titulo\":\"pepe\",\r\n    \"descripcion\":\"pepe\",\r\n    \"modalidad\":\"FULL_TIME\",\r\n    \"tipo_trabajo\":\"REMOTO\",\r\n    \"lugar\":\"pepe\",\r\n    \"categoria\":\"petrolera\",\r\n    \"sueldo_ofrecido\": \"100\",\r\n    \"fecha_vigencia\": \"2021-11-04@13:17:00.205-03:00\",\r\n     \"skills\": [{\r\n        \"name\":\"Java\",\r\n        \"mandatory\": true\r\n    }]\r\n}"
-				},
-				"url": {
-					"raw": "localhost:8080/publicacion/add",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"publicacion",
-						"add"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "postulacion/add",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"content-type": true
-				}
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "postulante1",
-							"type": "string"
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "empresa1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/reporte/01/112021",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reporte",
+								"01",
+								"112021"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"id\": {\r\n        \"id_postulante\":\"postulante1\",\r\n        \"id_publicacion\" : \"2\"\r\n    },\r\n    \"cv\":\"cv.pdf\",\r\n    \"remuneracion\": 100\r\n}"
+				{
+					"name": "02/{N}",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "empresa1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/reporte/02/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reporte",
+								"02",
+								"4"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:8080/postulacion/add",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"postulacion",
-						"add"
-					]
+				{
+					"name": "03",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "empresa1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/reporte/03",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reporte",
+								"03"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "empresa1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/reporte/04",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reporte",
+								"04"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
 			"name": "publicacion/{id}",
@@ -125,14 +224,14 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8080/publicacion/2",
+					"raw": "localhost:8080/publicacion/1",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"publicacion",
-						"2"
+						"1"
 					]
 				}
 			},
@@ -215,7 +314,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8080/publicacion/all/petrolera",
+					"raw": "localhost:8080/publicacion/all/IT",
 					"host": [
 						"localhost"
 					],
@@ -223,7 +322,7 @@
 					"path": [
 						"publicacion",
 						"all",
-						"petrolera"
+						"IT"
 					]
 				}
 			},
@@ -276,6 +375,139 @@
 			"response": []
 		},
 		{
+			"name": "publicacion/add",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "empresa1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"titulo\":\"\",\r\n    \"descripcion\":\"Empleo full time para importante Consultora de software.\",\r\n    \"modalidad\":\"PART_TIME\",\r\n    \"tipo_trabajo\":\"REMOTO\",\r\n    \"lugar\":\"Buenos Aires\",\r\n    \"categoria\":\"Bancaria\",\r\n    \"sueldo_ofrecido\": \"480000\",\r\n    \"fecha_vigencia\": \"2021-11-03@13:17:00.205-03:00\",\r\n     \"skills\": [{\r\n            \"name\":\"Java\",\r\n            \"mandatory\": false\r\n        }\r\n    ],\r\n    \"tareas\": [{\r\n            \"name\": \"Trabajar con el equipo de QA para aplicar técnicas de mejora continua.\"\r\n        }, {\r\n            \"name\": \"Detectar deuda técnica.\"\r\n        }, {\r\n            \"name\": \"Desarrollar software altamente escalable.\"\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/publicacion/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"publicacion",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "publicacion/open/{id}",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "empresa1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"titulo\":\"\",\r\n    \"descripcion\":\"Empleo full time para importante Consultora de software.\",\r\n    \"modalidad\":\"FULL_TIME\",\r\n    \"tipo_trabajo\":\"REMOTO\",\r\n    \"lugar\":\"Buenos Aires\",\r\n    \"categoria\":\"Petrolera\",\r\n    \"sueldo_ofrecido\": \"480000\",\r\n    \"fecha_vigencia\": \"2021-11-11@13:17:00.205-03:00\",\r\n     \"skills\": [{\r\n        \"name\":\"Java\",\r\n        \"mandatory\": false\r\n    }],\r\n    \"tareas\": [{\r\n        \"name\": \"Trabajar con el equipo de QA para aplicar técnicas de mejora continua.\"\r\n    }, {\r\n        \"name\": \"Detectar deuda técnica.\"\r\n    }, {\r\n        \"name\": \"Desarrollar software altamente escalable.\"\r\n    }]\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/publicacion/open/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"publicacion",
+						"open",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postulacion/add",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "postulante1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": {\r\n        \"id_postulante\":\"postulante1\",\r\n        \"id_publicacion\" : \"1\"\r\n    },\r\n    \"cv\":\"cv.pdf\",\r\n    \"remuneracion\": 100\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/postulacion/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"postulacion",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "public/users/empresa/register",
 			"request": {
 				"method": "POST",
@@ -288,7 +520,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"empresa5\",\r\n    \"password\": \"1234\",\r\n    \"razon_social\":\"Empresa S.R.L\"\r\n}"
+					"raw": "{\r\n    \"username\": \"empresa2\",\r\n    \"password\": \"1234\",\r\n    \"razon_social\":\"Empresa S.R.L\"\r\n}"
 				},
 				"url": {
 					"raw": "localhost:8080/public/users/empresa/register",
@@ -319,7 +551,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"postulante1\",\r\n    \"password\": \"1234\"\r\n}"
+					"raw": "{\r\n    \"username\": \"postulante2\",\r\n    \"password\": \"1234\"\r\n}"
 				},
 				"url": {
 					"raw": "localhost:8080/public/users/login",
@@ -349,7 +581,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"postulante4\",\r\n    \"password\": \"1234\",\r\n    \"nombre\": \"Postu\",\r\n    \"apellido\":\"Lante\",\r\n    \"fecha_nacimiento\": \"2000-01-01@00:00:00.000-03:00\",\r\n    \"skills\": [\r\n        {\r\n            \"name\":\"Cobol\"\r\n        },\r\n        {\r\n            \"name\": \"Java\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"username\": \"postulante2\",\r\n    \"password\": \"1234\",\r\n    \"nombre\": \"Postu\",\r\n    \"apellido\":\"Lante\",\r\n    \"fecha_nacimiento\": \"2000-01-01@00:00:00.000-03:00\",\r\n    \"skills\": [\r\n        {\r\n            \"name\":\"Java\"\r\n        }\r\n    ]\r\n}"
 				},
 				"url": {
 					"raw": "localhost:8080/public/users/postulante/register",

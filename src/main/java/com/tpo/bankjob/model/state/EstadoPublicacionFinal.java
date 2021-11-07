@@ -16,8 +16,9 @@ public class EstadoPublicacionFinal extends EstadoPublicacion {
 	}
 
 	public PublicacionVO transicionar(PublicacionVO ctx) {
-		LOGGER.info("Irreversible. La publicacion ya se encuentra finalizada.");
-		
+		LOGGER.info("No se llegara a esta instancia nunca. "
+				+ "Irreversible. "
+				+ "La publicacion ya se encuentra finalizada.");
 		return ctx;
 	}
 

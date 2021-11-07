@@ -1,5 +1,7 @@
 package com.tpo.bankjob.model;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,10 @@ public class Postulante {
 	
 	public String register(PostulanteVO postulanteVO) {
 		return postulanteDao.register(postulanteVO);
+	}
+
+	public List<PostulanteVO> findAll() {
+		return postulanteDao.findAll();
 	}
 
 }

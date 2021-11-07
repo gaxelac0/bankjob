@@ -1,5 +1,6 @@
 package com.tpo.bankjob.model.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class PostulanteDao {
 		postulanteRepository.saveAndFlush(postulanteVO);
 		users.save(postulanteVO.getId(), postulanteVO);
 		return postulanteVO.getId();
+	}
+
+	public List<PostulanteVO> findAll() {
+		return postulanteRepository.findAll();
 	}
 
 }

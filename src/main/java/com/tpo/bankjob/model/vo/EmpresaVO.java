@@ -16,11 +16,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.tpo.bankjob.model.observer.IObservable;
+import com.tpo.bankjob.model.observer.IObserver;
 
 @Entity
 @Table(name = "empresa")
 @JsonRootName(value = "empresa")
-public class EmpresaVO implements UserDetails {
+public class EmpresaVO implements UserDetails, IObserver {
 
 	private static final long serialVersionUID = 4384739614806100984L;
 
@@ -34,7 +36,7 @@ public class EmpresaVO implements UserDetails {
 	
 	@JsonProperty("publicaciones")
 	@Column(name = "publicaciones")
-	@OneToMany(mappedBy = "idEmpresa",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "empresa",fetch = FetchType.EAGER)
 	private List<PublicacionVO> publicaciones;
 	
 	@JsonProperty("username")
@@ -138,5 +140,14 @@ public class EmpresaVO implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public void notificarPostulacion(IObservable observable) {
+		
+		
+		
+		// (#ADOO) STRATEGY & ADAPTER)
+		System.out.println();
 	}
 }

@@ -5,6 +5,8 @@ import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+import java.util.Arrays;
+
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,9 +32,15 @@ import lombok.experimental.FieldDefaults;
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class SecurityConfig extends WebSecurityConfigurerAdapter {
-	private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
-			new AntPathRequestMatcher("/public/**")
+	
+	private static final RequestMatcher PUBLIC_URLS =
+			new OrRequestMatcher(
+					Arrays.asList(
+						new AntPathRequestMatcher("/public/**"),
+						new AntPathRequestMatcher("/reporte/**")
+					)
 			);
+	
 	private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);
 
 	TokenAuthenticationProvider provider;
@@ -93,6 +101,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/**
 	 * Disable Spring boot automatic filter registration.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Bean
 	FilterRegistrationBean disableAutoRegistration(final TokenAuthenticationFilter filter) {
 		final FilterRegistrationBean registration = new FilterRegistrationBean(filter);

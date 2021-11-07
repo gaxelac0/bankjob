@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,9 +31,13 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor(access = PACKAGE)
 final class PublicacionController {
 	
-	@NonNull
 	@Autowired
 	Publicacion publicacion;
+	
+	@Scheduled(fixedRate = 60000)
+	public void transicionarPublicaciones() {
+		publicacion.transicionarPublicaciones();
+	}
 		
 	//@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
 	@PostMapping("/add")
@@ -40,6 +45,13 @@ final class PublicacionController {
 			@RequestBody PublicacionVO publicacionVO,
 			BindingResult bindingResult) {
 		return publicacion.add(publicacionVO);
+	}
+	
+	@PostMapping("/open/{id}")
+	@ResponseBody PublicacionVO open(
+			@PathVariable String id) {
+				
+		return publicacion.open(getPublicacionById(id));
 	}
 	
 	@GetMapping("/all")
@@ -65,7 +77,9 @@ final class PublicacionController {
 	@ResponseBody List<PublicacionVO> getPublicacionesByIdEmpresa(
 			@PathVariable String idEmpresa) {
 		return publicacion.findAll().stream()
-				.filter((p) -> p.getIdEmpresa().equalsIgnoreCase(idEmpresa))
+				.filter((p) -> p.getEmpresa().getId().equalsIgnoreCase(idEmpresa))
 				.collect(Collectors.toList());
 	}
+	
+	
 }

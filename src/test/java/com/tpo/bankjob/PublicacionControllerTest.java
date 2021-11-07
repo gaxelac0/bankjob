@@ -39,7 +39,7 @@ public class PublicacionControllerTest {
 		
 		empresaRepository.saveAndFlush(empresaVO);
 		
-		PublicacionVO publicacionVO = new PublicacionVO(empresaVO.getId(),
+		PublicacionVO publicacionVO = new PublicacionVO(empresaVO,
 				"Publicacion1", 
 				"Descripcion", 
 				ModalidadEnum.FULL_TIME, 
@@ -68,6 +68,6 @@ public class PublicacionControllerTest {
 		Assert.assertNotNull(resultEmpresa);
 		Assert.assertNotNull(resultPublicacion);
 		Assert.assertTrue(empresaRepository.findById(empresaVO.getId()).get().getPublicaciones().get(0).equals(resultPublicacion));
-		Assert.assertTrue(resultPublicacion.getIdEmpresa().equals(empresaVO.getId()));
+		Assert.assertTrue(resultPublicacion.getEmpresa().getId().equals(empresaVO.getId()));
 	}
 }

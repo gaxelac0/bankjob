@@ -1,5 +1,8 @@
 package com.tpo.bankjob.model;
 
+import java.util.List;
+
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,5 +19,9 @@ public class Postulacion {
 	
 	public PostulacionVO add(PostulacionVO postulacionVO) {
 		return postulacionDao.add(postulacionVO);
+	}
+
+	public List<PostulacionVO> findAll() {
+		return postulacionDao.findAll();
 	}
 }

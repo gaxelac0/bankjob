@@ -6,29 +6,37 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.tpo.bankjob.model.observer.IObservable;
 import com.tpo.bankjob.model.state.EstadoPublicacion;
 import com.tpo.bankjob.model.state.EstadoPublicacionAbierto;
+import com.tpo.bankjob.model.state.EstadoPublicacionCerrado;
 
 @Component
 @Entity
 @Table(name = "publicacion")
 @JsonRootName(value = "publicacion")
-public class PublicacionVO implements Serializable {
+public class PublicacionVO implements Serializable, IObservable {
 	
 	private static final long serialVersionUID = 6672245192915168413L;
 
@@ -38,9 +46,12 @@ public class PublicacionVO implements Serializable {
 	@JsonProperty("id")
 	private String id;
 	
-	@Column(name = "id_empresa")
-	@JsonProperty("id_empresa")
-	private String idEmpresa;
+	@ManyToOne
+    @JoinColumn(name="id_empresa", nullable=false)
+	@JsonProperty(value = "id_empresa")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	@JsonIdentityReference(alwaysAsId = true) 
+	private EmpresaVO empresa;
 	
 	@JsonIgnore
 	@Column(name = "estado")
@@ -80,26 +91,41 @@ public class PublicacionVO implements Serializable {
 	@JsonProperty("sueldo_ofrecido")
 	private double sueldoOfrecido;
 	
+	@JsonProperty("postulaciones")
     @OneToMany(mappedBy = "publicacion")
     private List<PostulacionVO> postulaciones;
     
 	@JsonProperty("skills")
 	@Column(name = "skills")	
-    @OneToMany(mappedBy = "ownerId", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ownerId")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private  List<SkillVO> skills;
+	
+	@JsonProperty("tareas")
+	@Column(name = "tareas")	
+    @OneToMany(mappedBy = "publicacion")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private  List<TareaVO> tareas;
+	
+	//@JsonInclude(JsonInclude.Include.NON_NULL)
+	//@Transient
+	
+	// TODO no se estan persistiendo en la base
+    //private List<IObserver> observers;
 	
 	public PublicacionVO() {
 		this.estado = new EstadoPublicacionAbierto(this);
 		this.postulaciones = new ArrayList<>();
 		this.skills = new ArrayList<>();
+		this.tareas = new ArrayList<>();
 	}
 
-	public PublicacionVO(String idEmpresa, String titulo, String descripcion, 
+	public PublicacionVO(EmpresaVO empresa, String titulo, String descripcion, 
 			ModalidadEnum modalidad, TipoTrabajoEnum tipoTrabajo,
 			String lugar, String categoria,
 			double sueldoOfrecido, DateTime fechaVigencia) {
 		this();
-		this.idEmpresa = idEmpresa;
+		this.empresa = empresa;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.modalidad = modalidad;
@@ -118,12 +144,12 @@ public class PublicacionVO implements Serializable {
 		this.id = id;
 	}
 	
-	public String getIdEmpresa() {
-		return idEmpresa;
+	public EmpresaVO getEmpresa() {
+		return empresa;
 	}
 
-	public void setIdEmpresa(String idEmpresa) {
-		this.idEmpresa = idEmpresa;
+	public void setEmpresa(EmpresaVO empresa) {
+		this.empresa = empresa;
 	}
 	
 	public EstadoPublicacion getEstado() {
@@ -185,6 +211,11 @@ public class PublicacionVO implements Serializable {
 	public boolean isOpen() {
 		return (this.estado instanceof EstadoPublicacionAbierto);
 	}
+	
+	@JsonIgnore
+	public boolean isClosed() {
+		return (this.estado instanceof EstadoPublicacionCerrado);
+	}
 
 	public DateTime getFechaVigencia() {
 		return fechaVigencia;
@@ -210,7 +241,20 @@ public class PublicacionVO implements Serializable {
 		this.skills = skills;
 	}
 
+	public List<TareaVO> getTareas() {
+		return tareas;
+	}
+
+	public void setTareas(List<TareaVO> tareas) {
+		this.tareas = tareas;
+	}
+
 	public PublicacionVO transicionar() {
 		return estado.transicionar(this);
+	}
+
+	@Override
+	public void notificarPostulacion() {
+		empresa.notificarPostulacion(this);
 	}
 }

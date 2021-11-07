@@ -1,12 +1,17 @@
 package com.tpo.bankjob.model.dao;
 
+import java.util.List;
+
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tpo.bankjob.batch.ThreadPoolService;
 import com.tpo.bankjob.model.exception.AlreadyExistsPostulacionException;
 import com.tpo.bankjob.model.exception.InsufficientSkillsForPostulacionException;
 import com.tpo.bankjob.model.exception.InvalidPostulacionException;
 import com.tpo.bankjob.model.exception.PostulanteNotFoundException;
+import com.tpo.bankjob.model.exception.PublicacionIsNotOpenException;
 import com.tpo.bankjob.model.exception.PublicacionNotFoundException;
 import com.tpo.bankjob.model.repository.PostulacionRepository;
 import com.tpo.bankjob.model.repository.PostulanteRepository;
@@ -19,7 +24,7 @@ import com.tpo.bankjob.security.UserCrudService;
 
 @Component
 public class PostulacionDao {
-	
+		
 	@Autowired
 	UserCrudService users;
 	
@@ -34,7 +39,7 @@ public class PostulacionDao {
 	
 	@Autowired
 	SkillRepository skillRepository;
-
+	
 	public PostulacionVO add(PostulacionVO postulacionVO) {
 		
 		basicValidationAndSetting(postulacionVO);
@@ -42,8 +47,14 @@ public class PostulacionDao {
 		
 		return postulacionVO;
 	}
+	
+	public List<PostulacionVO> findAll() {
+		return postulacionRepository.findAll();
+	}
+	
 
-	private void basicValidationAndSetting(PostulacionVO postulacionVO) {
+	private void basicValidationAndSetting(PostulacionVO 
+			postulacionVO) {
 		
 		if(!RequestTokenService.getRequestToken()
 				.equalsIgnoreCase(postulacionVO.getId().getIdPostulante())) {
@@ -65,25 +76,29 @@ public class PostulacionDao {
 				
 		// la publicacion debe existir
 		publicacionRepository.findById(postulacionVO.getId().getIdPublicacion())
-		// la publicacion debe estar abierta // TODO throw exception publicacion abierta
-		.filter((p) -> p.isOpen())
-
+		// la publicacion debe estar abierta
         .map(obj -> {        	
             postulacionVO.setPublicacion(obj);
             return postulacionVO;
         })
         .orElseThrow(() -> new PublicacionNotFoundException(postulacionVO.getId().getIdPublicacion()));
 		
+		if(!postulacionVO.getPublicacion().isOpen())
+			throw new PublicacionIsNotOpenException();
 		
-		// TODO los postulantes deben cumplir con las habilidades exigidas por la publicacion
-		//.filter((p) -> PostulacionUtils.matchHabilidades(p.getSkills(), postulacionVO.getPostulante().getSkills())) 
-		//List<SkillVO> postulanteSkills = skillRepository.findAllByOwnerId(postulacionVO.getPostulante().getId());
-		//List<SkillVO> requiredSkills = skillRepository.findAllByOwnerId(postulacionVO.getPublicacion().getId().toString());
 		if(!PostulacionUtils.matchHabilidades(
 				postulacionVO.getPublicacion().getSkills(),
 				postulacionVO.getPostulante().getSkills())) {
 			throw new InsufficientSkillsForPostulacionException();
 		}
+		
+		// (#ADOO) PATTERN SINGLETON
+		ThreadPoolService.getInstance().execute(new Runnable() {
+		    @Override
+		    public void run() {
+		    	postulacionVO.getPublicacion().notificarPostulacion();
+		    }
+		});
 	}
-
+	
 }

@@ -8,8 +8,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+import org.joda.time.Instant;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -43,9 +47,17 @@ public class PostulacionVO {
     @Column(name =  "remuneracion")
     @JsonProperty("remuneracion")
     private double remuneracion;
+    
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", timezone="America/Buenos Aires")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@JsonProperty("fecha_postulacion")
+	@Column(name = "fecha_postulacion")
+	private DateTime fechaPostulacion;
 	
     
-	public PostulacionVO() {}
+	public PostulacionVO() {
+		this.fechaPostulacion = Instant.now().toDateTime();
+	}
 
 	public PostulacionVO(PostulacionKeyWrapper id) {
 		this();
@@ -90,6 +102,14 @@ public class PostulacionVO {
 
 	public void setRemuneracion(double remuneracion) {
 		this.remuneracion = remuneracion;
+	}
+
+	public DateTime getFechaPostulacion() {
+		return fechaPostulacion;
+	}
+
+	public void setFechaPostulacion(DateTime fechaPostulacion) {
+		this.fechaPostulacion = fechaPostulacion;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.tpo.bankjob.model;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +20,15 @@ public class Publicacion {
 	
 	public PublicacionVO add(PublicacionVO publicacionVO) {
 		
-		// TODO if publicacion.getTitulo() == null, generar uno
-		// titulo = generarTitulo();
-		// publicacion.setTitulo(titulo)
+		if(StringUtils.isBlank(publicacionVO.getTitulo())) {
+			publicacionVO.setTitulo(publicacionVO.getLugar() + " | "
+					+ publicacionVO.getCategoria() + " | "
+					+ publicacionVO.getTipoTrabajo()  + " | "
+					+ (!publicacionVO.getSkills().isEmpty() 
+							? publicacionVO.getSkills().get(0).getName().concat(" ") 
+									: "Trabajo ")
+					+ publicacionVO.getSueldoOfrecido() + "$");
+		}
 		
 		// TODO generar imagen representativa y guardar en el disco
 		// publicacionVO deberia tener un URL a la imagen generada
@@ -37,5 +44,13 @@ public class Publicacion {
 
 	public List<PublicacionVO> findAll() {
 		return publicacionDao.findAll();
+	}
+
+	public PublicacionVO open(PublicacionVO publicacionVO) {
+		return publicacionDao.open(publicacionVO);
+	}
+	
+	public void transicionarPublicaciones() {
+		publicacionDao.transicionarPublicaciones();
 	}
 }

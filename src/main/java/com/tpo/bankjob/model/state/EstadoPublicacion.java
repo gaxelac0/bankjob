@@ -2,9 +2,9 @@ package com.tpo.bankjob.model.state;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tpo.bankjob.model.vo.PublicacionVO;
 
+//(#ADOO) PATTERN STATE
 public abstract class EstadoPublicacion implements Serializable {
 	
 	private static final long serialVersionUID = -897034049431481002L;

@@ -1,5 +1,7 @@
 package com.tpo.bankjob.model.vo;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,13 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 @Entity
 @Table(name = "skill")
 @JsonRootName(value = "skill")
-public class SkillVO {
+public class SkillVO implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2600587232392521869L;
+
 	@Id 
 	@GeneratedValue
 	@Column(name = "id")

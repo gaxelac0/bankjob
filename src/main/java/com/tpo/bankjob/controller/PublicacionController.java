@@ -22,7 +22,6 @@ import com.tpo.bankjob.model.exception.PublicacionNotFoundException;
 import com.tpo.bankjob.model.vo.PublicacionVO;
 
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 @RestController

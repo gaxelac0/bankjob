@@ -3,6 +3,7 @@ package com.tpo.bankjob.model.dao;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,10 @@ public class EmpresaDao {
 		empresaRepository.saveAndFlush(empresaVO);
 		users.save(empresaVO.getId(), empresaVO);
 		return empresaVO.getId();
+	}
+
+	public Optional<EmpresaVO> findById(String id) {
+		return empresaRepository.findById(id);
 	}
 	
 }

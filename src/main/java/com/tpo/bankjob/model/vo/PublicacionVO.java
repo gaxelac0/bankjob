@@ -106,13 +106,7 @@ public class PublicacionVO implements Serializable, IObservable {
     @OneToMany(mappedBy = "publicacion")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private  List<TareaVO> tareas;
-	
-	//@JsonInclude(JsonInclude.Include.NON_NULL)
-	//@Transient
-	
-	// TODO no se estan persistiendo en la base
-    //private List<IObserver> observers;
-	
+		
 	public PublicacionVO() {
 		this.estado = new EstadoPublicacionAbierto(this);
 		this.postulaciones = new ArrayList<>();

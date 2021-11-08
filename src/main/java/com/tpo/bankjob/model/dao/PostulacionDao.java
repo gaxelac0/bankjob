@@ -59,7 +59,7 @@ public class PostulacionDao {
 		if(!RequestTokenService.getRequestToken()
 				.equalsIgnoreCase(postulacionVO.getId().getIdPostulante())) {
 			throw new InvalidPostulacionException("Solo el propio postulante "
-					+ "se puede postular a una publicación.");
+					+ "se puede postular a una publicacion.");
 		}
 		
 		// ya existe la publicacion

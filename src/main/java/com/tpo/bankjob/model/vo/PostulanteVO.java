@@ -6,11 +6,12 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,6 +48,10 @@ public class PostulanteVO implements UserDetails {
 	@Column(name = "apellido")
 	private String apellido;
 	
+	@Column(name = "canal_notificacion")
+	@JsonProperty("canal_notificacion")
+	private CanalNotificacionEnum canalNotificacion;
+	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", timezone="America/Buenos Aires")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@JsonProperty("fecha_nacimiento")
@@ -56,11 +61,17 @@ public class PostulanteVO implements UserDetails {
     @OneToMany(mappedBy = "postulante")
     private List<PostulacionVO> postulaciones;
     
-    
 	@JsonProperty("skills")
 	@Column(name = "skills")	
-    @OneToMany(mappedBy = "ownerId", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ownerId")
+	@LazyCollection(LazyCollectionOption.FALSE)
     private List<SkillVO> skills;
+	
+	@JsonProperty("intereses")
+	@Column(name = "intereses")	
+    @OneToMany(mappedBy = "idPostulante")
+	@LazyCollection(LazyCollectionOption.FALSE)
+    private List<InteresVO> intereses;
 	
 	public PostulanteVO() {
 		this.postulaciones = new ArrayList<>();
@@ -148,6 +159,18 @@ public class PostulanteVO implements UserDetails {
 		return new ArrayList<>();
 	}
 
+	public CanalNotificacionEnum getCanalNotificacion() {
+		return canalNotificacion;
+	}
+
+	public void setCanalNotificacion(CanalNotificacionEnum canalNotificacion) {
+		this.canalNotificacion = canalNotificacion;
+	}
+
+	public void setIntereses(List<InteresVO> intereses) {
+		this.intereses = intereses;
+	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
@@ -170,5 +193,18 @@ public class PostulanteVO implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public List<InteresVO> getIntereses() {
+		return this.intereses;
+	}
+
+	public void notificarNovedadesIntereses(List<PublicacionVO> novedadesIntereses) {
+		// TODO #ADOO STRATEGY + ADAPTER
+		
+	}
+
+	public void addInteres(InteresVO interes) {
+		this.intereses.add(interes);
 	}	
 }

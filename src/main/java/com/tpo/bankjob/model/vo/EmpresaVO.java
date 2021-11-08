@@ -47,6 +47,10 @@ public class EmpresaVO implements UserDetails, IObserver {
 	@Column(name = "password")
 	private String password;
 	
+	@Column(name = "canal_notificacion")
+	@JsonProperty("canal_notificacion")
+	private CanalNotificacionEnum canalNotificacion;
+	
 	public EmpresaVO() {
 		this.publicaciones = new ArrayList<>();
 	}
@@ -111,6 +115,14 @@ public class EmpresaVO implements UserDetails, IObserver {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public CanalNotificacionEnum getCanalNotificacion() {
+		return canalNotificacion;
+	}
+
+	public void setCanalNotificacion(CanalNotificacionEnum canalNotificacion) {
+		this.canalNotificacion = canalNotificacion;
 	}
 
 	@Override

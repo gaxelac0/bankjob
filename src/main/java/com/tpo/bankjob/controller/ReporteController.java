@@ -32,6 +32,7 @@ import com.tpo.bankjob.model.exception.BadFormatException;
 import com.tpo.bankjob.model.exception.InvalidActionException;
 import com.tpo.bankjob.model.vo.ModalidadEnum;
 import com.tpo.bankjob.model.vo.PostulacionVO;
+import com.tpo.bankjob.model.vo.PostulanteVO;
 import com.tpo.bankjob.model.vo.PublicacionVO;
 import com.tpo.bankjob.model.vo.TipoTrabajoEnum;
 
@@ -53,17 +54,29 @@ public class ReporteController {
 	@Autowired
 	Publicacion publicacion;
 	
-	@Scheduled(fixedRate = 600000000)
+	@Autowired
+	PublicacionController publicacionController;
+	
+	@Scheduled(fixedRate = 180000)
 	public void generarInformeFavs() {
-		/*for(PostulanteVO p: postulante.findAll()) {
-
-			List<String> categoriasFavoritas = p.getFavoritos()
-					.stream()
-					.map((fav) -> fav.getPublicacion().getCategoria())
-					.collect(Collectors.toList());
+		
+		for(PostulanteVO p: postulante.findAll()
+							.stream()
+							.filter(p -> !p.getIntereses().isEmpty())
+							.collect(Collectors.toList())) {
 			
+			List<PublicacionVO> result = new ArrayList<>();
+			p.getIntereses()
+			.stream()
+			.map(i -> i.getCategoria())
+			.forEach(c -> {
+				List<PublicacionVO> l = publicacionController.getPublicacionesByCategoria(c);
+				if(!l.isEmpty()) result.add(l.get(0));
+			});
 			
-		}*/
+			if(!result.isEmpty())
+				p.notificarNovedadesIntereses(result);
+		}
 	}
 	
 	/////////////////////////////////////// -> REPORTES
@@ -115,7 +128,7 @@ public class ReporteController {
 				.limit(cantidad);
 		
 		List<String> result = new ArrayList<>();
-		sorted.toList().forEach((p) -> result.add(p.getKey()));
+		sorted.collect(Collectors.toList()).forEach((p) -> result.add(p.getKey()));
 		return result;
 	}
 	

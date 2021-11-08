@@ -238,6 +238,96 @@
 			"response": []
 		},
 		{
+			"name": "empresa/{id}",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "empresa1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/empresa/empresa1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"empresa",
+						"empresa1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postulante/{id}",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "empresa1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/postulante/postulante1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"postulante",
+						"postulante1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "publicacion/all",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true,

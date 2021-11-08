@@ -38,7 +38,6 @@ final class PublicacionController {
 		publicacion.transicionarPublicaciones();
 	}
 		
-	//@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
 	@PostMapping("/add")
 	@ResponseBody PublicacionVO add(
 			@RequestBody PublicacionVO publicacionVO,

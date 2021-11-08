@@ -1,8 +1,21 @@
 package com.tpo.bankjob.model.dao;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.font.TextAttribute;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.AttributedString;
 import java.util.List;
 import java.util.Optional;
 
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +37,7 @@ import com.tpo.bankjob.security.RequestTokenService;
 public class PublicacionDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PublicacionDao.class);
+	private static final String IMG_PATH = "C:\\Users\\glacuesta\\Documents\\Facultad\\ADOO\\TPO\\workspace\\bankjob\\src\\main\\resources\\static\\img\\";
 	
 	@Autowired
 	PublicacionRepository publicacionRepository;
@@ -59,6 +73,10 @@ public class PublicacionDao {
 		
 		skillRepository.saveAllAndFlush(publicacionVO.getSkills());
 		tareaRepository.saveAllAndFlush(publicacionVO.getTareas());
+		
+		generarTitulo(publicacionVO);
+		generarImagen(publicacionVO);
+		
 		publicacionRepository.saveAndFlush(publicacionVO);
 		
 		// actualizar el obj empresa y el repo
@@ -101,6 +119,69 @@ public class PublicacionDao {
 		
 		LOGGER.info("Publicacion ID(" + publicacionVO.getId() + ") abierta manualmente por la empresa.");
 		return publicacionVO;
+	}
+	
+	private void generarTitulo(PublicacionVO publicacionVO) {
+		if(StringUtils.isBlank(publicacionVO.getTitulo())) {
+			publicacionVO.setTitulo(publicacionVO.getLugar() + " | "
+					+ publicacionVO.getCategoria() + " | "
+					+ publicacionVO.getTipoTrabajo()  + " | "
+					+ (!publicacionVO.getSkills().isEmpty() 
+							? publicacionVO.getSkills().get(0).getName().concat(" ") 
+									: "Trabajo ")
+					+ publicacionVO.getSueldoOfrecido() + "$");
+		}
+	}
+
+	private void generarImagen(PublicacionVO publicacionVO) {
+		
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(new File(IMG_PATH+getImgNameByLugar(publicacionVO.getLugar())));
+		} catch (IOException e) {
+			throw new InvalidActionException(e.getMessage());
+		}
+		
+		Font font = new Font("Arial", Font.BOLD, 18);
+
+		AttributedString attributedText = new AttributedString(publicacionVO.getTitulo());
+		attributedText.addAttribute(TextAttribute.FONT, font);
+		attributedText.addAttribute(TextAttribute.FOREGROUND, Color.GREEN);
+
+		Graphics g = image.getGraphics();
+		g.drawString(attributedText.getIterator(), 0, 20);
+		
+//		boolean proceed = true;
+//		File outputfile = null;
+//		try {
+//			outputfile = new File(IMG_PATH+"\\publicacion\\"+publicacionVO.getId()+".jpg");
+//			if(outputfile.exists()) proceed = outputfile.delete();
+//			if(proceed) proceed = outputfile.createNewFile();
+//			if(proceed) proceed = ImageIO.write(image, "jpg", outputfile);
+//		} catch (IOException e) {
+//			throw new InvalidActionException(e.getMessage());
+//		}
+		
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		try {
+			ImageIO.write(image, "jpg", output);
+		} catch (IOException e) {
+			throw new InvalidActionException(e.getMessage());
+		};
+		
+		publicacionVO.setImg(DatatypeConverter.printBase64Binary(output.toByteArray()));
+	}
+
+	private String getImgNameByLugar(String lugar) {
+		
+		String ret = "def.jpg";
+		switch(lugar) {
+			case "Buenos Aires": ret = "ba.jpg"; break;
+			case "Cordoba": ret = "cordoba.jpg"; break;
+			case "Montevideo": ret = "montevideo.jpg"; break;
+			default: ret = "def.jpg"; break;
+		}
+		return ret;
 	}
 	
     public void transicionarPublicaciones() {

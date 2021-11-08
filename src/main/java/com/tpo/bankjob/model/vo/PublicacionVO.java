@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -90,7 +93,7 @@ public class PublicacionVO implements Serializable, IObservable {
 	@Column(name = "sueldo_ofrecido")
 	@JsonProperty("sueldo_ofrecido")
 	private double sueldoOfrecido;
-	
+		
 	@JsonProperty("postulaciones")
     @OneToMany(mappedBy = "publicacion")
     private List<PostulacionVO> postulaciones;
@@ -106,6 +109,12 @@ public class PublicacionVO implements Serializable, IObservable {
     @OneToMany(mappedBy = "publicacion")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private  List<TareaVO> tareas;
+	
+	@Column(name = "img")
+	@JsonProperty("img")
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	private String img;
 		
 	public PublicacionVO() {
 		this.estado = new EstadoPublicacionAbierto(this);
@@ -198,6 +207,14 @@ public class PublicacionVO implements Serializable, IObservable {
 		this.sueldoOfrecido = sueldoOfrecido;
 	}
 	
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
 	public boolean equals(PublicacionVO other) {
 		return this.id == other.getId();
 	}

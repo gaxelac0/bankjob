@@ -37,7 +37,7 @@ import com.tpo.bankjob.security.RequestTokenService;
 public class PublicacionDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PublicacionDao.class);
-	private static final String IMG_PATH = "C:\\Users\\glacuesta\\Documents\\Facultad\\ADOO\\TPO\\workspace\\bankjob\\src\\main\\resources\\static\\img\\";
+	private static final String IMG_PATH = "src/main/resources/static/img/";
 	
 	@Autowired
 	PublicacionRepository publicacionRepository;
@@ -137,36 +137,26 @@ public class PublicacionDao {
 		
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File(IMG_PATH+getImgNameByLugar(publicacionVO.getLugar())));
+			File file = new File(IMG_PATH+getImgNameByLugar(publicacionVO.getLugar()));
+			file.getAbsolutePath();
+			image = ImageIO.read(file);
 		} catch (IOException e) {
-			throw new InvalidActionException(e.getMessage());
+			throw new InvalidActionException("No se pudo generar la imagen. Detalle: " + e.getMessage());
 		}
 		
 		Font font = new Font("Arial", Font.BOLD, 18);
-
 		AttributedString attributedText = new AttributedString(publicacionVO.getTitulo());
 		attributedText.addAttribute(TextAttribute.FONT, font);
 		attributedText.addAttribute(TextAttribute.FOREGROUND, Color.GREEN);
-
+		
 		Graphics g = image.getGraphics();
 		g.drawString(attributedText.getIterator(), 0, 20);
-		
-//		boolean proceed = true;
-//		File outputfile = null;
-//		try {
-//			outputfile = new File(IMG_PATH+"\\publicacion\\"+publicacionVO.getId()+".jpg");
-//			if(outputfile.exists()) proceed = outputfile.delete();
-//			if(proceed) proceed = outputfile.createNewFile();
-//			if(proceed) proceed = ImageIO.write(image, "jpg", outputfile);
-//		} catch (IOException e) {
-//			throw new InvalidActionException(e.getMessage());
-//		}
 		
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		try {
 			ImageIO.write(image, "jpg", output);
 		} catch (IOException e) {
-			throw new InvalidActionException(e.getMessage());
+			throw new InvalidActionException("No se pudo generar la imagen. Detalle: " + e.getMessage());
 		};
 		
 		publicacionVO.setImg(DatatypeConverter.printBase64Binary(output.toByteArray()));

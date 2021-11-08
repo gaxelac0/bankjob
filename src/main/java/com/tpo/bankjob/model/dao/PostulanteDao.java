@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tpo.bankjob.model.exception.AlreadyRegisteredUserException;
-import com.tpo.bankjob.model.exception.InvalidPostulacionException;
 import com.tpo.bankjob.model.exception.PostulanteNotFoundException;
 import com.tpo.bankjob.model.repository.InteresRepository;
 import com.tpo.bankjob.model.repository.PostulanteRepository;

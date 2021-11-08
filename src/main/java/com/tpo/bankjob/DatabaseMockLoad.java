@@ -22,7 +22,6 @@ public class DatabaseMockLoad {
 	@Autowired
 	UserCrudService users;
 
-	@SuppressWarnings("deprecation")
 	@Bean
 	CommandLineRunner initDatabase(PostulanteRepository postulanteRepository, EmpresaRepository empresaRepository) {
 

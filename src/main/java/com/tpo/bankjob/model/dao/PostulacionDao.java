@@ -2,7 +2,6 @@ package com.tpo.bankjob.model.dao;
 
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

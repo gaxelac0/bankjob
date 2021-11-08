@@ -4,7 +4,6 @@ import static java.util.Optional.ofNullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;

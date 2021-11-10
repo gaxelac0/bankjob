@@ -76,6 +76,7 @@ public class PostulanteVO implements UserDetails {
 	public PostulanteVO() {
 		this.postulaciones = new ArrayList<>();
 		this.skills = new ArrayList<>();
+		this.intereses = new ArrayList<>();
 	}
 	
 	public PostulanteVO(String id, String username,

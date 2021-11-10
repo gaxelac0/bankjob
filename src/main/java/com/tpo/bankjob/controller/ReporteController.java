@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -81,7 +82,8 @@ public class ReporteController {
 	
 	/////////////////////////////////////// -> REPORTES
 	@GetMapping("/01/{periodo}")
-	@ResponseBody PublicacionVO obtenerPublicacionMasSolicitada(
+	@ResponseBody
+	public PublicacionVO obtenerPublicacionMasSolicitada(
 			@PathVariable String periodo) {
 		
 		YearMonth ym = parseAndGetYearMonth(periodo);
@@ -113,7 +115,7 @@ public class ReporteController {
 	}
 	
 	@GetMapping("/02/{cantidad}")
-	@ResponseBody List<String> obtenerCategoriasMasSeleccionadas(
+	public @ResponseBody List<String> obtenerCategoriasMasSeleccionadas(
 			@PathVariable int cantidad) {
 		
 		HashMap<String, Long> map = new HashMap<>();
@@ -133,7 +135,7 @@ public class ReporteController {
 	}
 	
 	@GetMapping("/03")
-	@ResponseBody PublicacionVO obtenerPublicacionMasAccesible() {
+	public @ResponseBody PublicacionVO obtenerPublicacionMasAccesible() {
 		
 		List<PublicacionVO> list = publicacion.findAll().stream()
 		.filter((p) -> p.getTipoTrabajo().equals(TipoTrabajoEnum.REMOTO))
@@ -144,8 +146,11 @@ public class ReporteController {
 			throw new InvalidActionException("No hay publicaciones en el sistema.");
 		
 		list.sort(Comparator.comparing(p -> 
-					((PublicacionVO)p).getTareas().size() + 
-					((PublicacionVO)p).getSkills().size()
+					((PublicacionVO)p).getTareas().size()
+					+ ((PublicacionVO)p).getSkills()
+					.stream()
+					.filter(s -> s.isMandatory())
+					.collect(Collectors.toList()).size()
 				)
 		);
 		
@@ -153,7 +158,7 @@ public class ReporteController {
 	}
 	
 	@GetMapping("/04")
-	@ResponseBody PublicacionVO obtenerPublicacionMasExigente() {
+	public @ResponseBody PublicacionVO obtenerPublicacionMasExigente() {
 		List<PublicacionVO> list = publicacion.findAll();
 		if(list.isEmpty())
 			throw new InvalidActionException("No hay publicaciones en el sistema.");

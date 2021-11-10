@@ -31,12 +31,13 @@ public class PublicacionControllerTest {
     PublicacionRepository publicacionRepository;
 		
 	@Test
-	public void givenValidEmpresaAndPublicacionVoWhenAddPublicacionThenSaveItSucessfully() {
+	public void givenEmpresaYPublicacionVoValidasWhenAddPublicacionThenGuardarlaExitosamente() {
 		
 		// given
-		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(), "empresa1", "1234");
-		RequestTokenService.setRequestToken(empresaVO.getId()); // TODO corregir test? token?
-		
+		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(),
+				"empresa1",
+				"1234");
+		RequestTokenService.setRequestToken(empresaVO.getId());
 		empresaRepository.saveAndFlush(empresaVO);
 		
 		PublicacionVO publicacionVO = new PublicacionVO(empresaVO,
@@ -50,7 +51,7 @@ public class PublicacionControllerTest {
 				new DateTime());
 		
 		//  when
-		publicacion.add(publicacionVO); // TODO corregir test? token?
+		publicacion.add(publicacionVO);
 		
 		// then
 		EmpresaVO resultEmpresa = null;
@@ -69,5 +70,42 @@ public class PublicacionControllerTest {
 		Assert.assertNotNull(resultPublicacion);
 		Assert.assertTrue(empresaRepository.findById(empresaVO.getId()).get().getPublicaciones().get(0).equals(resultPublicacion));
 		Assert.assertTrue(resultPublicacion.getEmpresa().getId().equals(empresaVO.getId()));
+	}
+	
+	
+	@Test
+	public void givenPublicacionValidaSinTituloWhenSaveThenGuardarlaExistosamenteConTituloAutogenerado() {
+		
+		// given
+		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(),
+				"empresa1",
+				"1234");
+		RequestTokenService.setRequestToken(empresaVO.getId());
+		empresaRepository.saveAndFlush(empresaVO);
+		
+		PublicacionVO publicacionVO = new PublicacionVO(empresaVO,
+				"", 
+				"Descripcion", 
+				ModalidadEnum.FULL_TIME, 
+				TipoTrabajoEnum.PRESENCIAL, 
+				"Lugar",
+				"Categoria",
+				Double.valueOf(100),
+				new DateTime());
+		
+		//  when
+		publicacion.add(publicacionVO);
+		
+		// then
+		PublicacionVO resultPublicacion = null;
+		Optional<PublicacionVO> optResultPublicacion = publicacionRepository.findById(publicacionVO.getId());
+	
+		if(optResultPublicacion.isPresent())
+			resultPublicacion = optResultPublicacion.get();
+		
+		Assert.assertNotNull(resultPublicacion);
+		Assert.assertTrue(!resultPublicacion.getTitulo().isBlank() 
+				&& resultPublicacion.getTitulo().contains(resultPublicacion.getLugar()));
+		
 	}
 }

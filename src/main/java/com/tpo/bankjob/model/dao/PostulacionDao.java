@@ -1,6 +1,7 @@
 package com.tpo.bankjob.model.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import com.tpo.bankjob.model.repository.PostulacionRepository;
 import com.tpo.bankjob.model.repository.PostulanteRepository;
 import com.tpo.bankjob.model.repository.PublicacionRepository;
 import com.tpo.bankjob.model.repository.SkillRepository;
+import com.tpo.bankjob.model.utils.PostulacionKeyWrapper;
 import com.tpo.bankjob.model.utils.PostulacionUtils;
 import com.tpo.bankjob.model.vo.PostulacionVO;
 import com.tpo.bankjob.security.RequestTokenService;
@@ -39,7 +41,7 @@ public class PostulacionDao {
 	@Autowired
 	SkillRepository skillRepository;
 	
-	public PostulacionVO add(PostulacionVO postulacionVO) {
+	public PostulacionVO add(PostulacionVO postulacionVO) throws RuntimeException {
 		
 		basicValidationAndSetting(postulacionVO);
 		postulacionRepository.saveAndFlush(postulacionVO);
@@ -53,7 +55,7 @@ public class PostulacionDao {
 	
 
 	private void basicValidationAndSetting(PostulacionVO 
-			postulacionVO) {
+			postulacionVO) throws RuntimeException {
 		
 		if(!RequestTokenService.getRequestToken()
 				.equalsIgnoreCase(postulacionVO.getId().getIdPostulante())) {
@@ -98,6 +100,10 @@ public class PostulacionDao {
 		    	postulacionVO.getPublicacion().notificarPostulacion();
 		    }
 		});
+	}
+
+	public Optional<PostulacionVO> findById(PostulacionKeyWrapper id) {
+		return postulacionRepository.findById(id);
 	}
 	
 }

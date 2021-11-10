@@ -59,7 +59,7 @@ public class PostulanteVO implements UserDetails {
 	@JsonView(View.Public.class)
 	@Column(name = "canal_notificacion")
 	@JsonProperty("canal_notificacion")
-	private CanalNotificacionEnum canalNotificacion;
+	private CanalNotificacion canalNotificacion;
 	
 	@JsonView(View.Public.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", timezone="America/Buenos Aires")
@@ -169,11 +169,11 @@ public class PostulanteVO implements UserDetails {
 		this.skills = skills;
 	}
 	
-	public CanalNotificacionEnum getCanalNotificacion() {
+	public CanalNotificacion getCanalNotificacion() {
 		return canalNotificacion;
 	}
 
-	public void setCanalNotificacion(CanalNotificacionEnum canalNotificacion) {
+	public void setCanalNotificacion(CanalNotificacion canalNotificacion) {
 		this.canalNotificacion = canalNotificacion;
 	}
 

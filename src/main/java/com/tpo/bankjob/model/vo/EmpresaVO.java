@@ -19,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.observer.IObservable;
 import com.tpo.bankjob.model.observer.IObserver;
+import com.tpo.bankjob.model.utils.StrategyFactory;
 import com.tpo.bankjob.model.utils.View;
+import com.tpo.bankjob.strategy.Notificador;
 
 @Entity
 @Table(name = "empresa")
@@ -58,7 +60,7 @@ public class EmpresaVO implements UserDetails, IObserver {
 	@JsonView(View.Public.class)
 	@Column(name = "canal_notificacion")
 	@JsonProperty("canal_notificacion")
-	private CanalNotificacionEnum canalNotificacion;
+	private CanalNotificacion canalNotificacion;
 	
 	public EmpresaVO() {
 		this.publicaciones = new ArrayList<>();
@@ -126,11 +128,11 @@ public class EmpresaVO implements UserDetails, IObserver {
 		this.password = password;
 	}
 
-	public CanalNotificacionEnum getCanalNotificacion() {
+	public CanalNotificacion getCanalNotificacion() {
 		return canalNotificacion;
 	}
 
-	public void setCanalNotificacion(CanalNotificacionEnum canalNotificacion) {
+	public void setCanalNotificacion(CanalNotificacion canalNotificacion) {
 		this.canalNotificacion = canalNotificacion;
 	}
 
@@ -168,13 +170,15 @@ public class EmpresaVO implements UserDetails, IObserver {
 		return true;
 	}
 
+	// (#ADOO) STRATEGY & ADAPTER
 	@JsonView(View.Internal.class)
 	@Override
 	public void notificarPostulacion(IObservable observable) {
 		
-		
-		
-		// (#ADOO) STRATEGY & ADAPTER)
-		System.out.println();
+		Notificacion notificacion = new Notificacion("Ha recibido una postulacion nueva "
+				+ "en la publicacion \"" + ((PublicacionVO)observable).getTitulo() + "\"");
+	
+		Notificador notificador = new Notificador(StrategyFactory.getStrategy(canalNotificacion));		
+		notificador.send(notificacion);
 	}
 }

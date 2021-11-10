@@ -1,6 +1,6 @@
 package com.tpo.bankjob.model.vo;
 
-public enum CanalNotificacionEnum {
+public enum CanalNotificacion {
 	
 	MAIL,
 	PUSH,

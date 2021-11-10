@@ -16,37 +16,46 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.observer.IObservable;
 import com.tpo.bankjob.model.observer.IObserver;
+import com.tpo.bankjob.model.utils.View;
 
 @Entity
 @Table(name = "empresa")
 @JsonRootName(value = "empresa")
+@JsonView(View.Public.class)
 public class EmpresaVO implements UserDetails, IObserver {
 
 	private static final long serialVersionUID = 4384739614806100984L;
 
+	@JsonView(View.Public.class)
 	@JsonProperty("id")
 	@Column(name = "id")
 	private @Id String id;
 	
+	@JsonView(View.Public.class)
 	@JsonProperty("razon_social")
 	@Column(name = "razon_social")
 	private String razonSocial;
 	
+	@JsonView(View.ExtendedPublic.class)
 	@JsonProperty("publicaciones")
 	@Column(name = "publicaciones")
 	@OneToMany(mappedBy = "empresa",fetch = FetchType.EAGER)
 	private List<PublicacionVO> publicaciones;
 	
+	@JsonView(View.Internal.class)
 	@JsonProperty("username")
 	@Column(name = "username")
 	private String username;
 	
+	@JsonView(View.Internal.class)
 	@JsonProperty("password")
 	@Column(name = "password")
 	private String password;
 	
+	@JsonView(View.Public.class)
 	@Column(name = "canal_notificacion")
 	@JsonProperty("canal_notificacion")
 	private CanalNotificacionEnum canalNotificacion;
@@ -125,35 +134,41 @@ public class EmpresaVO implements UserDetails, IObserver {
 		this.canalNotificacion = canalNotificacion;
 	}
 
+	@JsonView(View.Internal.class)
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return new ArrayList<>();
 	}
 
+	@JsonView(View.Internal.class)
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@JsonView(View.Internal.class)
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@JsonView(View.Internal.class)
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@JsonView(View.Internal.class)
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@JsonView(View.Internal.class)
 	@Override
 	public void notificarPostulacion(IObservable observable) {
 		

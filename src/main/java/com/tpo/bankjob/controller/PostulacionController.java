@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.Postulacion;
+import com.tpo.bankjob.model.utils.View;
 import com.tpo.bankjob.model.vo.PostulacionVO;
 
 import lombok.AllArgsConstructor;
@@ -27,7 +29,8 @@ final class PostulacionController {
 	@NonNull
 	@Autowired
 	Postulacion postulacion;
-		
+	
+	@JsonView(View.Public.class)
 	@PostMapping("/add")
 	@ResponseBody PostulacionVO add(
 			@RequestBody PostulacionVO postulacionVO,

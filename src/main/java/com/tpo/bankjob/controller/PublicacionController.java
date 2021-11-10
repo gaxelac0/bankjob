@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.Publicacion;
 import com.tpo.bankjob.model.exception.PublicacionNotFoundException;
+import com.tpo.bankjob.model.utils.View;
 import com.tpo.bankjob.model.vo.PublicacionVO;
 
 import lombok.AllArgsConstructor;
@@ -37,7 +39,8 @@ final class PublicacionController {
 	public void transicionarPublicaciones() {
 		publicacion.transicionarPublicaciones();
 	}
-		
+	
+	@JsonView(View.Public.class)
 	@PostMapping("/add")
 	@ResponseBody PublicacionVO add(
 			@RequestBody PublicacionVO publicacionVO,
@@ -45,6 +48,7 @@ final class PublicacionController {
 		return publicacion.add(publicacionVO);
 	}
 	
+	@JsonView(View.Public.class)
 	@PostMapping("/open/{id}")
 	@ResponseBody PublicacionVO open(
 			@PathVariable String id) {
@@ -52,11 +56,13 @@ final class PublicacionController {
 		return publicacion.open(getPublicacionById(id));
 	}
 	
+	@JsonView(View.Public.class)
 	@GetMapping("/all")
 	@ResponseBody List<PublicacionVO> getPublicaciones() {
 		return publicacion.findAll();
 	}
 	
+	@JsonView(View.Public.class)
 	@GetMapping("/all/{categoria}")
 	@ResponseBody List<PublicacionVO> getPublicacionesByCategoria(
 			@PathVariable String categoria) {
@@ -65,12 +71,14 @@ final class PublicacionController {
 				.collect(Collectors.toList());
 	}
 	
+	@JsonView(View.Internal.class)
 	@GetMapping("/{id}")
 	@ResponseBody PublicacionVO getPublicacionById(
 			@PathVariable String id) {
 		return publicacion.get(id).map((p) -> p).orElseThrow(() -> new PublicacionNotFoundException(id));
 	}
 	
+	@JsonView(View.ExtendedPublic.class)
 	@GetMapping("/empresa/{idEmpresa}")
 	@ResponseBody List<PublicacionVO> getPublicacionesByIdEmpresa(
 			@PathVariable String idEmpresa) {

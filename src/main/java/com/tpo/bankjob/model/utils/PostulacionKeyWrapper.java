@@ -10,10 +10,12 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Component
 @Embeddable
 @JsonRootName(value = "id")
+@JsonView(View.Public.class)
 public class PostulacionKeyWrapper implements Serializable {
 	
 	/**
@@ -21,10 +23,12 @@ public class PostulacionKeyWrapper implements Serializable {
 	 */
 	private static final long serialVersionUID = -116116459282227011L;
 
+	@JsonView(View.Public.class)
 	@Column(name = "id_postulante")
 	@JsonProperty("id_postulante")
 	private String idPostulante;
 	
+	@JsonView(View.Public.class)
 	@Column(name = "id_publicacion")
 	@JsonProperty("id_publicacion")
 	private String idPublicacion;
@@ -32,7 +36,6 @@ public class PostulacionKeyWrapper implements Serializable {
 	public PostulacionKeyWrapper() {}
 
 	public PostulacionKeyWrapper(String idPostulante, String idPublicacion) {
-		super();
 		this.idPostulante = idPostulante;
 		this.idPublicacion = idPublicacion;
 	}

@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.Empresa;
 import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.utils.CredentialsWrapper;
 import com.tpo.bankjob.model.utils.LoginResponseWrapper;
+import com.tpo.bankjob.model.utils.View;
 import com.tpo.bankjob.model.vo.EmpresaVO;
 import com.tpo.bankjob.model.vo.PostulanteVO;
 import com.tpo.bankjob.security.UserAuthenticationService;
@@ -39,18 +41,21 @@ final class PublicUsersController {
 	@NonNull
 	UserAuthenticationService authentication;
 
+	@JsonView(View.Public.class)
 	@PostMapping("/empresa/register")
 	String register(@RequestBody EmpresaVO empresaVO,
 			BindingResult bindingResult) throws RuntimeException {
 		return empresa.register(empresaVO);
 	}
 	
+	@JsonView(View.Public.class)
 	@PostMapping("/postulante/register")
 	String register(@RequestBody PostulanteVO postulanteVO,
 			BindingResult bindingResult) throws RuntimeException {
 		return postulante.register(postulanteVO);
 	}
 
+	@JsonView(View.Public.class)
 	@PostMapping("/login")
 	@ResponseBody LoginResponseWrapper login(@RequestBody CredentialsWrapper credentials) {
 		

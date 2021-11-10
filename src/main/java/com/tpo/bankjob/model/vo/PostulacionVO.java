@@ -1,9 +1,12 @@
 package com.tpo.bankjob.model.vo;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -17,14 +20,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.utils.PostulacionKeyWrapper;
+import com.tpo.bankjob.model.utils.View;
 
 @Component
 @Entity
 @Table(name = "postulacion")
 @JsonRootName(value = "postulacion")
+@JsonView(View.ExtendedPublic.class)
 public class PostulacionVO {
 	
+	@JsonView(View.Public.class)
 	@EmbeddedId
 	private PostulacionKeyWrapper id;
 	
@@ -40,20 +47,24 @@ public class PostulacionVO {
     @JsonIgnore
     private PublicacionVO publicacion;
     
-    @Column(name =  "cv")
-    @JsonProperty("cv")
-    private String cv;
-    
+    @JsonView(View.Public.class)
     @Column(name =  "remuneracion")
     @JsonProperty("remuneracion")
     private double remuneracion;
     
+    @JsonView(View.Public.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", timezone="America/Buenos Aires")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@JsonProperty("fecha_postulacion")
 	@Column(name = "fecha_postulacion")
 	private DateTime fechaPostulacion;
-	
+    
+    @JsonView(View.Public.class)
+	@Column(name = "cv")
+	@JsonProperty("cv")
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	private String cv;
     
 	public PostulacionVO() {
 		this.fechaPostulacion = Instant.now().toDateTime();

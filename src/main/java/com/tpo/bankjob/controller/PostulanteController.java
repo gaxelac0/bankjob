@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.exception.PostulanteNotFoundException;
+import com.tpo.bankjob.model.utils.View;
 import com.tpo.bankjob.model.vo.InteresVO;
 import com.tpo.bankjob.model.vo.PostulanteVO;
 
@@ -32,6 +34,7 @@ final class PostulanteController {
 	@Autowired
 	Postulante postulante;
 
+	@JsonView(View.Public.class)
 	@GetMapping("/{id}")
 	@ResponseBody PostulanteVO get(
 			@PathVariable String id) {
@@ -44,6 +47,7 @@ final class PostulanteController {
 		return opt.get();
 	}
 	
+	@JsonView(View.Public.class)
 	@PostMapping("interes/add")
 	@ResponseBody InteresVO addInteres(
 			@RequestBody InteresVO interes,

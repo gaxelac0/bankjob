@@ -13,11 +13,14 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.tpo.bankjob.model.utils.View;
 
 @Component
 @Entity
 @Table(name = "skill")
 @JsonRootName(value = "skill")
+@JsonView(View.Public.class)
 public class SkillVO implements Serializable {
 	
 	/**

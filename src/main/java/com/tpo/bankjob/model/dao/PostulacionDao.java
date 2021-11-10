@@ -57,12 +57,8 @@ public class PostulacionDao {
 	private void basicValidationAndSetting(PostulacionVO 
 			postulacionVO) throws RuntimeException {
 		
-		if(!RequestTokenService.getRequestToken()
-				.equalsIgnoreCase(postulacionVO.getId().getIdPostulante())) {
-			throw new InvalidPostulacionException("Solo el propio postulante "
-					+ "se puede postular a una publicacion.");
-		}
-		
+		postulacionVO.getId().setIdPostulante(RequestTokenService.getRequestToken());
+				
 		// ya existe la publicacion
 		if(postulacionRepository.findById(postulacionVO.getId()).isPresent()) 
 			throw new AlreadyExistsPostulacionException(postulacionVO.getId());

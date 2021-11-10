@@ -13,11 +13,14 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.tpo.bankjob.model.utils.View;
 
 @Component
 @Entity
 @Table(name = "interes")
 @JsonRootName(value = "interes")
+@JsonView(View.Public.class)
 public class InteresVO implements Serializable {
 	
 	private static final long serialVersionUID = -2653294078098750944L;
@@ -28,10 +31,12 @@ public class InteresVO implements Serializable {
 	@JsonIgnore
 	private Long id;
 	
+	@JsonView(View.Internal.class)
 	@JsonProperty("id_postulante")
 	@Column(name = "idPostulante")
 	private String idPostulante;
 	
+	@JsonView(View.Public.class)
 	@JsonProperty("categoria")
 	@Column(name = "categoria")
 	private String categoria;

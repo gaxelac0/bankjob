@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.Empresa;
 import com.tpo.bankjob.model.exception.EmpresaNotFoundException;
+import com.tpo.bankjob.model.utils.View;
 import com.tpo.bankjob.model.vo.EmpresaVO;
 
 import lombok.AllArgsConstructor;
@@ -28,6 +30,7 @@ final class EmpresaController {
 	@Autowired
 	Empresa empresa;
 
+	@JsonView(View.ExtendedPublic.class)
 	@GetMapping("/{id}")
 	@ResponseBody EmpresaVO get(
 			@PathVariable String id) {

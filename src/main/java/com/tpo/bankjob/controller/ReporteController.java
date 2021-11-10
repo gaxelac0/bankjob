@@ -11,7 +11,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,12 +24,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.base.Supplier;
 import com.tpo.bankjob.model.Postulacion;
 import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.Publicacion;
 import com.tpo.bankjob.model.exception.BadFormatException;
 import com.tpo.bankjob.model.exception.InvalidActionException;
+import com.tpo.bankjob.model.utils.View;
 import com.tpo.bankjob.model.vo.ModalidadEnum;
 import com.tpo.bankjob.model.vo.PostulacionVO;
 import com.tpo.bankjob.model.vo.PostulanteVO;
@@ -81,6 +82,7 @@ public class ReporteController {
 	}
 	
 	/////////////////////////////////////// -> REPORTES
+	@JsonView(View.Internal.class)
 	@GetMapping("/01/{periodo}")
 	@ResponseBody
 	public PublicacionVO obtenerPublicacionMasSolicitada(
@@ -134,6 +136,7 @@ public class ReporteController {
 		return result;
 	}
 	
+	@JsonView(View.Internal.class)
 	@GetMapping("/03")
 	public @ResponseBody PublicacionVO obtenerPublicacionMasAccesible() {
 		
@@ -157,6 +160,7 @@ public class ReporteController {
 		return list.get(0);
 	}
 	
+	@JsonView(View.Internal.class)
 	@GetMapping("/04")
 	public @ResponseBody PublicacionVO obtenerPublicacionMasExigente() {
 		List<PublicacionVO> list = publicacion.findAll();

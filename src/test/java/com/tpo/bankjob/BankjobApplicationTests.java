@@ -7,8 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tpo.bankjob.model.vo.EmpresaVO;
-import com.tpo.bankjob.model.vo.PublicacionVO;
+import com.tpo.bankjob.model.Empresa;
+import com.tpo.bankjob.model.Publicacion;
 
 @SpringBootTest
 class BankjobApplicationTests {
@@ -25,8 +25,8 @@ class BankjobApplicationTests {
 				+ "\"publicaciones\":[]}";
 
 		// when
-		EmpresaVO empresaVO = new ObjectMapper()
-				.readerFor(EmpresaVO.class)
+		Empresa empresaVO = new ObjectMapper()
+				.readerFor(Empresa.class)
 				.readValue(SOURCE_JSON);
 
 		// then
@@ -39,11 +39,11 @@ class BankjobApplicationTests {
 		// given
 		String SOURCE_JSON = "{\"id\":\"1\",\"id_empresa\":\"1\",\"titulo\":\"pepe\","
 				+ "\"descripcion\":\"pepe\",\"modalidad\":\"1\",\"tipo_trabajo\":\"1\","
-				+ "\"lugar\":\"pepe\",\"categoria\":\"pepe\",\"sueldo_ofrecido\":\"100\"}";
+				+ "\"locacion\":\"pepe\",\"categoria\":\"pepe\",\"sueldo_ofrecido\":\"100\"}";
 
 		// when
-		PublicacionVO publicacionVO = new ObjectMapper()
-				.readerFor(PublicacionVO.class)
+		Publicacion publicacionVO = new ObjectMapper()
+				.readerFor(Publicacion.class)
 				.readValue(SOURCE_JSON);
 
 		// then
@@ -57,7 +57,7 @@ class BankjobApplicationTests {
 //		// given
 //		String SOURCE_JSON = "{\"empresa\":{\"id\":\"1\",\"razon_social\":\"pepe\",\"publicaciones\":[]},\"publicacion\":{\"id\":\"1\",\"titulo\":\"pepe\","
 //				+ "\"descripcion\":\"pepe\",\"modalidad\":\"1\",\"tipo_trabajo\":\"1\","
-//				+ "\"lugar\":\"pepe\",\"categoria\":\"pepe\",\"sueldo_ofrecido\":\"100\"}}";
+//				+ "\"locacion\":\"pepe\",\"categoria\":\"pepe\",\"sueldo_ofrecido\":\"100\"}}";
 //
 //		// when
 //		PublicationEmpresaWrapper wrapper = new ObjectMapper()
@@ -72,7 +72,7 @@ class BankjobApplicationTests {
 	public void givenEmpresaVoPojoWhenDeserializeThenDeserializeSucessfully() throws IOException {
 
 		// given
-		EmpresaVO empresaVO = new EmpresaVO("", "", ""); // TODO: corregir constructor
+		Empresa empresaVO = new Empresa("", "", ""); // TODO: corregir constructor
 
 		// when
 		String deserialized = new ObjectMapper().writeValueAsString(empresaVO);
@@ -82,10 +82,10 @@ class BankjobApplicationTests {
 	}
 	
 	@Test
-	public void givenPublicacionPojonWhenDeserializeThenDeserializeSucessfully() throws IOException {
+	public void givenPublicacionPojoWhenDeserializeThenDeserializeSucessfully() throws IOException {
 
 		// given
-		PublicacionVO publicacionVO = new PublicacionVO(); // TODO fix test
+		Publicacion publicacionVO = new Publicacion(); // TODO fix test
 
 		// when
 		String deserialized = new ObjectMapper().writeValueAsString(publicacionVO);

@@ -9,9 +9,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tpo.bankjob.model.Empresa;
 import com.tpo.bankjob.model.exception.AlreadyRegisteredUserException;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
-import com.tpo.bankjob.model.vo.EmpresaVO;
 import com.tpo.bankjob.security.UserCrudService;
 
 import lombok.AllArgsConstructor;
@@ -28,9 +28,9 @@ public class EmpresaDao {
 	@Autowired
 	EmpresaRepository empresaRepository;
 
-	public String register(EmpresaVO empresaVO) {
+	public String register(Empresa empresaVO) {
 		
-		EmpresaVO empresa =  empresaRepository.findByUsername(empresaVO.getUsername());
+		Empresa empresa =  empresaRepository.findByUsername(empresaVO.getUsername());
 		if(empresa != null)
 			throw new AlreadyRegisteredUserException(empresaVO.getUsername());
 		
@@ -40,7 +40,7 @@ public class EmpresaDao {
 		return empresaVO.getId();
 	}
 
-	public Optional<EmpresaVO> findById(String id) {
+	public Optional<Empresa> findById(String id) {
 		return empresaRepository.findById(id);
 	}
 	

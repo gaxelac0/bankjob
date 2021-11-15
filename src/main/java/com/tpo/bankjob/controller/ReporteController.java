@@ -32,11 +32,8 @@ import com.tpo.bankjob.model.Publicacion;
 import com.tpo.bankjob.model.exception.BadFormatException;
 import com.tpo.bankjob.model.exception.InvalidActionException;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.ModalidadEnum;
-import com.tpo.bankjob.model.vo.PostulacionVO;
-import com.tpo.bankjob.model.vo.PostulanteVO;
-import com.tpo.bankjob.model.vo.PublicacionVO;
-import com.tpo.bankjob.model.vo.TipoTrabajoEnum;
+import com.tpo.bankjob.model.vo.Modalidad;
+import com.tpo.bankjob.model.vo.TipoTrabajo;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -48,31 +45,28 @@ import lombok.experimental.FieldDefaults;
 public class ReporteController {
 	
 	@Autowired
-	Postulante postulante;
+	PostulanteController postulanteController;
 	
 	@Autowired
-	Postulacion postulacion;
-	
-	@Autowired
-	Publicacion publicacion;
-	
+	PostulacionController postulacionController;
+		
 	@Autowired
 	PublicacionController publicacionController;
 	
 	@Scheduled(fixedRate = 180000)
 	public void generarInformeFavs() {
 		
-		for(PostulanteVO p: postulante.findAll()
+		for(Postulante p: postulanteController.getPostulantes()
 							.stream()
 							.filter(p -> !p.getIntereses().isEmpty())
 							.collect(Collectors.toList())) {
 			
-			List<PublicacionVO> result = new ArrayList<>();
+			List<Publicacion> result = new ArrayList<>();
 			p.getIntereses()
 			.stream()
 			.map(i -> i.getCategoria())
 			.forEach(c -> {
-				List<PublicacionVO> l = publicacionController.getPublicacionesByCategoria(c);
+				List<Publicacion> l = publicacionController.getPublicacionesByCategoria(c);
 				if(!l.isEmpty()) result.add(l.get(0));
 			});
 			
@@ -85,7 +79,7 @@ public class ReporteController {
 	@JsonView(View.Internal.class)
 	@GetMapping("/01/{periodo}")
 	@ResponseBody
-	public PublicacionVO obtenerPublicacionMasSolicitada(
+	public Publicacion obtenerPublicacionMasSolicitada(
 			@PathVariable String periodo) {
 		
 		YearMonth ym = parseAndGetYearMonth(periodo);
@@ -95,22 +89,22 @@ public class ReporteController {
 		DateTime max = new DateTime(ym.getYear(), ym.getMonthValue(),
 				min.dayOfMonth().getMaximumValue(), 0, 0);
 	
-		HashMap<PublicacionVO, Long> map = new HashMap<>();
+		HashMap<Publicacion, Long> map = new HashMap<>();
 			
-		List<PostulacionVO> listaPeriodo = postulacion.findAll().stream()		
+		List<Postulacion> listaPeriodo = postulacionController.getPostulaciones().stream()		
 		.filter((p) -> p.getFechaPostulacion().isAfter(min))
 		.filter((p) -> p.getFechaPostulacion().isBefore(max)).collect(Collectors.toList());
 		
 		if(listaPeriodo.isEmpty())
 			throw new InvalidActionException("No hay postulaciones para el periodo");
 		
-		for(PostulacionVO postulacion: listaPeriodo) {
-			PublicacionVO p = postulacion.getPublicacion();
+		for(Postulacion postulacion: listaPeriodo) {
+			Publicacion p = postulacion.getPublicacion();
 			if(!map.containsKey(p)) map.put(p, 1L);
 			else map.put(p, map.get(p)+1L);
 		}
 		
-		Stream<Map.Entry<PublicacionVO,Long>> sorted = map.entrySet().stream()
+		Stream<Map.Entry<Publicacion,Long>> sorted = map.entrySet().stream()
 				.sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
 		
 		return sorted.findFirst().get().getKey();
@@ -121,7 +115,7 @@ public class ReporteController {
 			@PathVariable int cantidad) {
 		
 		HashMap<String, Long> map = new HashMap<>();
-		for(PublicacionVO pub: publicacion.findAll()) {
+		for(Publicacion pub: publicacionController.getPublicaciones()) {
 			String catego = pub.getCategoria();
 			if(!map.containsKey(catego)) map.put(catego, 1L);
 			else map.put(catego, map.get(catego)+1L);
@@ -138,19 +132,19 @@ public class ReporteController {
 	
 	@JsonView(View.Internal.class)
 	@GetMapping("/03")
-	public @ResponseBody PublicacionVO obtenerPublicacionMasAccesible() {
+	public @ResponseBody Publicacion obtenerPublicacionMasAccesible() {
 		
-		List<PublicacionVO> list = publicacion.findAll().stream()
-		.filter((p) -> p.getTipoTrabajo().equals(TipoTrabajoEnum.REMOTO))
-		.filter((p) -> p.getModalidad().equals(ModalidadEnum.PART_TIME))
+		List<Publicacion> list = publicacionController.getPublicaciones().stream()
+		.filter((p) -> p.getTipoTrabajo().equals(TipoTrabajo.REMOTO))
+		.filter((p) -> p.getModalidad().equals(Modalidad.PART_TIME))
 		.collect(Collectors.toList());
 		
 		if(list.isEmpty())
 			throw new InvalidActionException("No hay publicaciones en el sistema.");
 		
 		list.sort(Comparator.comparing(p -> 
-					((PublicacionVO)p).getTareas().size()
-					+ ((PublicacionVO)p).getSkills()
+					((Publicacion)p).getTareas().size()
+					+ ((Publicacion)p).getSkills()
 					.stream()
 					.filter(s -> s.isMandatory())
 					.collect(Collectors.toList()).size()
@@ -162,11 +156,11 @@ public class ReporteController {
 	
 	@JsonView(View.Internal.class)
 	@GetMapping("/04")
-	public @ResponseBody PublicacionVO obtenerPublicacionMasExigente() {
-		List<PublicacionVO> list = publicacion.findAll();
+	public @ResponseBody Publicacion obtenerPublicacionMasExigente() {
+		List<Publicacion> list = publicacionController.getPublicaciones();
 		if(list.isEmpty())
 			throw new InvalidActionException("No hay publicaciones en el sistema.");
-		list.sort(Comparator.comparing(p -> ((PublicacionVO)p).getSkills().size()).reversed());
+		list.sort(Comparator.comparing(p -> ((Publicacion)p).getSkills().size()).reversed());
 		return list.get(0);
 	}
 	
@@ -182,7 +176,7 @@ public class ReporteController {
 		return YearMonth.parse(mmYYYY, DateTimeFormatter.ofPattern("MM/uuuu"));
 	}
 
-	static <T> boolean assertException(Supplier<? extends T> supplier) {
+	private static <T> boolean assertException(Supplier<? extends T> supplier) {
 	    try {
 	    	supplier.get();
 	        return true;

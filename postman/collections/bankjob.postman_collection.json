@@ -447,7 +447,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"titulo\":\"pepe\",\r\n    \"descripcion\":\"pepe\",\r\n    \"modalidad\":\"1\",\r\n    \"tipo_trabajo\":\"1\",\r\n    \"lugar\":\"pepe\",\r\n    \"categoria\":\"pepe\",\r\n    \"sueldo_ofrecido\": \"100\",\r\n    \"fecha_vigencia\": \"2021-11-02@13:17:00.205-03:00\"\r\n}"
+					"raw": "{\r\n    \"titulo\":\"pepe\",\r\n    \"descripcion\":\"pepe\",\r\n    \"modalidad\":\"1\",\r\n    \"tipo_trabajo\":\"1\",\r\n    \"locacion\":\"pepe\",\r\n    \"categoria\":\"pepe\",\r\n    \"sueldo_ofrecido\": \"100\",\r\n    \"fecha_vigencia\": \"2021-11-02@13:17:00.205-03:00\"\r\n}"
 				},
 				"url": {
 					"raw": "localhost:8080/publicacion/empresa/empresa1",
@@ -492,7 +492,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"titulo\":\"\",\r\n    \"descripcion\":\"Empleo full time para importante Consultora de software.\",\r\n    \"modalidad\":\"PART_TIME\",\r\n    \"tipo_trabajo\":\"REMOTO\",\r\n    \"lugar\":\"Montevideo\",\r\n    \"categoria\":\"IT\",\r\n    \"sueldo_ofrecido\": \"480000\",\r\n    \"fecha_vigencia\": \"2021-11-03@13:17:00.205-03:00\",\r\n     \"skills\": [{\r\n            \"name\":\"Java\",\r\n            \"mandatory\": false\r\n        }\r\n    ],\r\n    \"tareas\": [{\r\n            \"name\": \"Trabajar con el equipo de QA para aplicar técnicas de mejora continua.\"\r\n        }, {\r\n            \"name\": \"Detectar deuda técnica.\"\r\n        }, {\r\n            \"name\": \"Desarrollar software altamente escalable.\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"titulo\":\"\",\r\n    \"descripcion\":\"Empleo full time para importante Consultora de software.\",\r\n    \"modalidad\":\"PART_TIME\",\r\n    \"tipo_trabajo\":\"REMOTO\",\r\n    \"locacion\":\"Montevideo\",\r\n    \"categoria\":\"IT\",\r\n    \"sueldo_ofrecido\": \"480000\",\r\n    \"fecha_vigencia\": \"2021-11-03@13:17:00.205-03:00\",\r\n     \"skills\": [{\r\n            \"name\":\"Java\",\r\n            \"mandatory\": false\r\n        }\r\n    ],\r\n    \"tareas\": [{\r\n            \"name\": \"Trabajar con el equipo de QA para aplicar técnicas de mejora continua.\"\r\n        }, {\r\n            \"name\": \"Detectar deuda técnica.\"\r\n        }, {\r\n            \"name\": \"Desarrollar software altamente escalable.\"\r\n        }\r\n    ]\r\n}"
 				},
 				"url": {
 					"raw": "localhost:8080/publicacion/add",
@@ -536,7 +536,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"titulo\":\"\",\r\n    \"descripcion\":\"Empleo full time para importante Consultora de software.\",\r\n    \"modalidad\":\"FULL_TIME\",\r\n    \"tipo_trabajo\":\"REMOTO\",\r\n    \"lugar\":\"Buenos Aires\",\r\n    \"categoria\":\"Petrolera\",\r\n    \"sueldo_ofrecido\": \"480000\",\r\n    \"fecha_vigencia\": \"2021-11-11@13:17:00.205-03:00\",\r\n     \"skills\": [{\r\n        \"name\":\"Java\",\r\n        \"mandatory\": false\r\n    }],\r\n    \"tareas\": [{\r\n        \"name\": \"Trabajar con el equipo de QA para aplicar técnicas de mejora continua.\"\r\n    }, {\r\n        \"name\": \"Detectar deuda técnica.\"\r\n    }, {\r\n        \"name\": \"Desarrollar software altamente escalable.\"\r\n    }]\r\n}"
+					"raw": "{\r\n    \"titulo\":\"\",\r\n    \"descripcion\":\"Empleo full time para importante Consultora de software.\",\r\n    \"modalidad\":\"FULL_TIME\",\r\n    \"tipo_trabajo\":\"REMOTO\",\r\n    \"locacion\":\"Buenos Aires\",\r\n    \"categoria\":\"Petrolera\",\r\n    \"sueldo_ofrecido\": \"480000\",\r\n    \"fecha_vigencia\": \"2021-11-11@13:17:00.205-03:00\",\r\n     \"skills\": [{\r\n        \"name\":\"Java\",\r\n        \"mandatory\": false\r\n    }],\r\n    \"tareas\": [{\r\n        \"name\": \"Trabajar con el equipo de QA para aplicar técnicas de mejora continua.\"\r\n    }, {\r\n        \"name\": \"Detectar deuda técnica.\"\r\n    }, {\r\n        \"name\": \"Desarrollar software altamente escalable.\"\r\n    }]\r\n}"
 				},
 				"url": {
 					"raw": "localhost:8080/publicacion/open/1",

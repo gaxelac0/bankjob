@@ -28,7 +28,7 @@ final class UUIDAuthenticationService implements UserAuthenticationService {
 		
 		Optional<UserDetails> ret = users.findByUsername(username);
 		if(!ret.isPresent() || !ret.get().getPassword().equalsIgnoreCase(password)) {
-			throw new InvalidCredentialsException(); // TODO: exception
+			throw new InvalidCredentialsException();
 		}
 		
 		return ret.get();

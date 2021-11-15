@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tpo.bankjob.batch.ThreadPoolService;
+import com.tpo.bankjob.model.Postulacion;
 import com.tpo.bankjob.model.exception.AlreadyExistsPostulacionException;
 import com.tpo.bankjob.model.exception.InsufficientSkillsForPostulacionException;
-import com.tpo.bankjob.model.exception.InvalidPostulacionException;
 import com.tpo.bankjob.model.exception.PostulanteNotFoundException;
 import com.tpo.bankjob.model.exception.PublicacionIsNotOpenException;
 import com.tpo.bankjob.model.exception.PublicacionNotFoundException;
@@ -19,7 +19,6 @@ import com.tpo.bankjob.model.repository.PublicacionRepository;
 import com.tpo.bankjob.model.repository.SkillRepository;
 import com.tpo.bankjob.model.utils.PostulacionKeyWrapper;
 import com.tpo.bankjob.model.utils.PostulacionUtils;
-import com.tpo.bankjob.model.vo.PostulacionVO;
 import com.tpo.bankjob.security.RequestTokenService;
 import com.tpo.bankjob.security.UserCrudService;
 
@@ -41,7 +40,7 @@ public class PostulacionDao {
 	@Autowired
 	SkillRepository skillRepository;
 	
-	public PostulacionVO add(PostulacionVO postulacionVO) throws RuntimeException {
+	public Postulacion add(Postulacion postulacionVO) throws RuntimeException {
 		
 		basicValidationAndSetting(postulacionVO);
 		postulacionRepository.saveAndFlush(postulacionVO);
@@ -49,12 +48,12 @@ public class PostulacionDao {
 		return postulacionVO;
 	}
 	
-	public List<PostulacionVO> findAll() {
+	public List<Postulacion> findAll() {
 		return postulacionRepository.findAll();
 	}
 	
 
-	private void basicValidationAndSetting(PostulacionVO 
+	private void basicValidationAndSetting(Postulacion 
 			postulacionVO) throws RuntimeException {
 		
 		postulacionVO.getId().setIdPostulante(RequestTokenService.getRequestToken());
@@ -98,7 +97,7 @@ public class PostulacionDao {
 		});
 	}
 
-	public Optional<PostulacionVO> findById(PostulacionKeyWrapper id) {
+	public Optional<Postulacion> findById(PostulacionKeyWrapper id) {
 		return postulacionRepository.findById(id);
 	}
 	

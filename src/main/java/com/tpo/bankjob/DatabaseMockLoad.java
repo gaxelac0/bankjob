@@ -8,10 +8,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.tpo.bankjob.model.Empresa;
+import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.repository.PostulanteRepository;
-import com.tpo.bankjob.model.vo.EmpresaVO;
-import com.tpo.bankjob.model.vo.PostulanteVO;
+import com.tpo.bankjob.model.vo.CanalNotificacion;
 import com.tpo.bankjob.security.UserCrudService;
 
 @Configuration
@@ -29,13 +30,14 @@ public class DatabaseMockLoad {
 			
 			// TODO: cargar memoria
 			//////////////////////////// >>> Postulante
-			PostulanteVO postulanteVO = new PostulanteVO("postulante1", "postulante1", "1234",
+			Postulante postulanteVO = new Postulante("postulante1", "postulante1", "1234",
 					"Postu", "Lante", new DateTime(2021, 11, 1, 0, 0));
 			users.save(postulanteVO.getId(), postulanteVO);
 			LOGGER.info("Preloading " + postulanteRepository.saveAndFlush(postulanteVO));
 	
 			////////////////////////////>>> Empresa
-			EmpresaVO empresaVO = new EmpresaVO("empresa1", "empresa1", "1234");
+			Empresa empresaVO = new Empresa("empresa1", "empresa1", "1234");
+			empresaVO.setCanalNotificacion(CanalNotificacion.MAIL);
 			users.save(empresaVO.getId(), empresaVO);
 			LOGGER.info("Preloading " + empresaRepository.saveAndFlush(empresaVO));	
 		};

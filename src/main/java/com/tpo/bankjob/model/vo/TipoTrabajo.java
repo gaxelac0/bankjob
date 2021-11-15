@@ -1,6 +1,6 @@
 package com.tpo.bankjob.model.vo;
 
-public enum TipoTrabajoEnum {
+public enum TipoTrabajo {
 	
 	PRESENCIAL,
 	REMOTO

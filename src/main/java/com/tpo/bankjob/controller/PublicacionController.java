@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.Publicacion;
 import com.tpo.bankjob.model.exception.PublicacionNotFoundException;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.PublicacionVO;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -42,15 +41,15 @@ final class PublicacionController {
 	
 	@JsonView(View.Public.class)
 	@PostMapping("/add")
-	@ResponseBody PublicacionVO add(
-			@RequestBody PublicacionVO publicacionVO,
+	@ResponseBody Publicacion add(
+			@RequestBody Publicacion publicacionVO,
 			BindingResult bindingResult) {
 		return publicacion.add(publicacionVO);
 	}
 	
 	@JsonView(View.Public.class)
 	@PostMapping("/open/{id}")
-	@ResponseBody PublicacionVO open(
+	@ResponseBody Publicacion open(
 			@PathVariable String id) {
 				
 		return publicacion.open(getPublicacionById(id));
@@ -58,13 +57,13 @@ final class PublicacionController {
 	
 	@JsonView(View.Public.class)
 	@GetMapping("/all")
-	@ResponseBody List<PublicacionVO> getPublicaciones() {
+	@ResponseBody List<Publicacion> getPublicaciones() {
 		return publicacion.findAll();
 	}
 	
 	@JsonView(View.Public.class)
 	@GetMapping("/all/{categoria}")
-	@ResponseBody List<PublicacionVO> getPublicacionesByCategoria(
+	@ResponseBody List<Publicacion> getPublicacionesByCategoria(
 			@PathVariable String categoria) {
 		return publicacion.findAll().stream()
 				.filter((p) -> p.getCategoria().equalsIgnoreCase(categoria))
@@ -73,14 +72,14 @@ final class PublicacionController {
 	
 	@JsonView(View.Internal.class)
 	@GetMapping("/{id}")
-	@ResponseBody PublicacionVO getPublicacionById(
+	@ResponseBody Publicacion getPublicacionById(
 			@PathVariable String id) {
 		return publicacion.get(id).map((p) -> p).orElseThrow(() -> new PublicacionNotFoundException(id));
 	}
 	
 	@JsonView(View.ExtendedPublic.class)
 	@GetMapping("/empresa/{idEmpresa}")
-	@ResponseBody List<PublicacionVO> getPublicacionesByIdEmpresa(
+	@ResponseBody List<Publicacion> getPublicacionesByIdEmpresa(
 			@PathVariable String idEmpresa) {
 		return publicacion.findAll().stream()
 				.filter((p) -> p.getEmpresa().getId().equalsIgnoreCase(idEmpresa))

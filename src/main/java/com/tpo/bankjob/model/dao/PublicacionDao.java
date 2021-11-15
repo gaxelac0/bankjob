@@ -16,21 +16,19 @@ import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tpo.bankjob.model.Empresa;
+import com.tpo.bankjob.model.Publicacion;
 import com.tpo.bankjob.model.exception.EmpresaNotFoundException;
 import com.tpo.bankjob.model.exception.InvalidActionException;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.repository.PublicacionRepository;
 import com.tpo.bankjob.model.repository.SkillRepository;
 import com.tpo.bankjob.model.repository.TareaRepository;
-import com.tpo.bankjob.model.state.EstadoPublicacionAbierto;
-import com.tpo.bankjob.model.vo.EmpresaVO;
-import com.tpo.bankjob.model.vo.PublicacionVO;
 import com.tpo.bankjob.security.RequestTokenService;
 
 @Component
@@ -51,14 +49,14 @@ public class PublicacionDao {
 	@Autowired
 	TareaRepository tareaRepository;
 	
-	public PublicacionVO add(PublicacionVO publicacionVO) {
+	public Publicacion add(Publicacion publicacionVO) {
 		
-		Optional<EmpresaVO> opt = empresaRepository.findById(RequestTokenService.getRequestToken());
+		Optional<Empresa> opt = empresaRepository.findById(RequestTokenService.getRequestToken());
 		if(!opt.isPresent()) {
 			throw new EmpresaNotFoundException(RequestTokenService.getRequestToken());
 		}
 		
-		EmpresaVO empresaVO = opt.get();
+		Empresa empresaVO = opt.get();
 		
 		// agrega la publicacion al repo de publicaciones
 		publicacionVO.setEmpresa(empresaVO);
@@ -86,44 +84,38 @@ public class PublicacionDao {
 		return publicacionVO;
 	}
 
-	public Optional<PublicacionVO> get(String id) {
+	public Optional<Publicacion> get(String id) {
 		return publicacionRepository.findById(id);
 	}
 
-	public List<PublicacionVO> findAll() {
+	public List<Publicacion> findAll() {
 		return publicacionRepository.findAll();
 	}
 
-	public PublicacionVO open(PublicacionVO publicacionVO) {
+	public Publicacion open(Publicacion publicacionVO) {
 		
-		Optional<EmpresaVO> opt = empresaRepository.findById(RequestTokenService.getRequestToken());
+		Optional<Empresa> opt = empresaRepository.findById(RequestTokenService.getRequestToken());
 		if(!opt.isPresent()) {
 			throw new EmpresaNotFoundException(
 					RequestTokenService.getRequestToken());
 		}
 		
-		EmpresaVO empresaVO = opt.get();
+		Empresa empresaVO = opt.get();
 		if(!publicacionVO.getEmpresa().getId().equalsIgnoreCase(empresaVO.getId())) {
 			throw new InvalidActionException("Solo la propia empresa puede"
 					+ " abrir sus publicaciones cerradas.");
 		}
-		
-		if(!publicacionVO.isClosed()) {
-			throw new InvalidActionException("No se pueden abrir publicaciones "
-					+ "que no se encuentren en estado cerrado.");
-		}
-		
-		publicacionVO.setFechaVigencia(Instant.now().toDateTime().plusWeeks(2));
-		publicacionVO.setEstado(new EstadoPublicacionAbierto(publicacionVO));
+	
+		publicacionVO.getEstado().open(publicacionVO);
 		publicacionRepository.saveAndFlush(publicacionVO);
 		
 		LOGGER.info("Publicacion ID(" + publicacionVO.getId() + ") abierta manualmente por la empresa.");
 		return publicacionVO;
 	}
 	
-	private void generarTitulo(PublicacionVO publicacionVO) {
+	private void generarTitulo(Publicacion publicacionVO) {
 		if(StringUtils.isBlank(publicacionVO.getTitulo())) {
-			publicacionVO.setTitulo(publicacionVO.getLugar() + " | "
+			publicacionVO.setTitulo(publicacionVO.getLocacion() + " | "
 					+ publicacionVO.getCategoria() + " | "
 					+ publicacionVO.getTipoTrabajo()  + " | "
 					+ (!publicacionVO.getSkills().isEmpty() 
@@ -133,11 +125,11 @@ public class PublicacionDao {
 		}
 	}
 
-	private void generarImagen(PublicacionVO publicacionVO) {
+	private void generarImagen(Publicacion publicacionVO) {
 		
 		BufferedImage image = null;
 		try {
-			File file = new File(IMG_PATH+getImgNameByLugar(publicacionVO.getLugar()));
+			File file = new File(IMG_PATH+getImgNameByLocacion(publicacionVO.getLocacion()));
 			file.getAbsolutePath();
 			image = ImageIO.read(file);
 		} catch (IOException e) {
@@ -162,7 +154,7 @@ public class PublicacionDao {
 		publicacionVO.setImg(DatatypeConverter.printBase64Binary(output.toByteArray()));
 	}
 
-	private String getImgNameByLugar(String lugar) {
+	private String getImgNameByLocacion(String lugar) {
 		
 		String ret = "def.jpg";
 		switch(lugar) {

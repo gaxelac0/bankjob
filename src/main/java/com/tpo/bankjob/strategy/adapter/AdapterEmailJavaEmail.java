@@ -1,12 +1,17 @@
 package com.tpo.bankjob.strategy.adapter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.tpo.bankjob.model.vo.Notificacion;
 
 public class AdapterEmailJavaEmail implements AdapterNotificadorEmail {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdapterEmailJavaEmail.class);
 	
 	public void enviarEmail(Notificacion notificacion) {
 		// MAIL API
-		System.out.println("Se envio notificacion por mail.");
+		LOGGER.info("Se envio notificacion por mail: " + notificacion.getMensaje());
 	}
 
 }

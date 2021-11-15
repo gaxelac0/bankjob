@@ -3,6 +3,7 @@ package com.tpo.bankjob.controller;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.exception.PostulanteNotFoundException;
 import com.tpo.bankjob.model.utils.View;
 import com.tpo.bankjob.model.vo.InteresVO;
-import com.tpo.bankjob.model.vo.PostulanteVO;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -36,10 +36,10 @@ final class PostulanteController {
 
 	@JsonView(View.Public.class)
 	@GetMapping("/{id}")
-	@ResponseBody PostulanteVO get(
+	@ResponseBody Postulante get(
 			@PathVariable String id) {
 		
-		Optional<PostulanteVO> opt = postulante.findById(id);
+		Optional<Postulante> opt = postulante.findById(id);
 		if(!opt.isPresent()) {
 			throw new PostulanteNotFoundException(id);
 		}
@@ -48,10 +48,21 @@ final class PostulanteController {
 	}
 	
 	@JsonView(View.Public.class)
+	@PostMapping("/register")
+	String register(@RequestBody Postulante postulanteVO,
+			BindingResult bindingResult) throws RuntimeException {
+		return postulante.register(postulanteVO);
+	}
+	
+	@JsonView(View.Public.class)
 	@PostMapping("interes/add")
 	@ResponseBody InteresVO addInteres(
 			@RequestBody InteresVO interes,
 			BindingResult bindingResult) {
 		return postulante.addInteres(interes);
-	}	
+	}
+
+	public List<Postulante> getPostulantes() {
+		return postulante.findAll();
+	}
 }

@@ -6,7 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.tpo.bankjob.model.vo.PublicacionVO;
+import com.tpo.bankjob.model.Publicacion;
+import com.tpo.bankjob.model.exception.InvalidActionException;
 
 @Component
 public class EstadoPublicacionAbierto extends EstadoPublicacion {
@@ -18,11 +19,11 @@ public class EstadoPublicacionAbierto extends EstadoPublicacion {
 	//@JsonIgnore
    // public GlobalProperties properties;
 
-	public EstadoPublicacionAbierto(PublicacionVO ctx) {
+	public EstadoPublicacionAbierto(Publicacion ctx) {
 		super(ctx);
 	}
 
-	public PublicacionVO transicionar(PublicacionVO ctx) {
+	public Publicacion transicionar(Publicacion ctx) {
 		
 		// si excedio el tiempo de vigencia para estar abierta
 		if(Instant.now().toDateTime().isAfter(ctx.getFechaVigencia())) {
@@ -32,6 +33,12 @@ public class EstadoPublicacionAbierto extends EstadoPublicacion {
 		}
 		
 		return ctx;
+	}
+
+	@Override
+	public void open(Publicacion ctx) {
+		throw new InvalidActionException("No se pueden abrir publicaciones "
+				+ "que se encuentren abiertas.");
 	}
 
 }

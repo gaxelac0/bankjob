@@ -12,18 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.tpo.bankjob.controller.ReporteController;
+import com.tpo.bankjob.model.Empresa;
 import com.tpo.bankjob.model.Postulacion;
 import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.Publicacion;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.utils.PostulacionKeyWrapper;
-import com.tpo.bankjob.model.vo.EmpresaVO;
-import com.tpo.bankjob.model.vo.ModalidadEnum;
-import com.tpo.bankjob.model.vo.PostulacionVO;
-import com.tpo.bankjob.model.vo.PostulanteVO;
-import com.tpo.bankjob.model.vo.PublicacionVO;
+import com.tpo.bankjob.model.vo.Modalidad;
 import com.tpo.bankjob.model.vo.SkillVO;
-import com.tpo.bankjob.model.vo.TipoTrabajoEnum;
+import com.tpo.bankjob.model.vo.TipoTrabajo;
 import com.tpo.bankjob.security.RequestTokenService;
 
 @SpringBootTest
@@ -48,26 +45,26 @@ class ReporteControllerTests {
 	public void obtenerPublicacionMasSolicitadaTest() {
 
 		// se registra y logea la empresa para poder agregar una publicacion
-		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(),
+		Empresa empresaVO = new Empresa(UUID.randomUUID().toString(),
 				"empresa1",
 				"1234");
 		empresaRepository.saveAndFlush(empresaVO);
 		RequestTokenService.setRequestToken(empresaVO.getId());
 		
 		// se agrega la publicacion
-		PublicacionVO publicacionVO = new PublicacionVO(empresaVO,
+		Publicacion publicacionVO = new Publicacion(empresaVO,
 				"Titulo", 
 				"Descripcion", 
-				ModalidadEnum.FULL_TIME, 
-				TipoTrabajoEnum.PRESENCIAL, 
-				"Lugar",
+				Modalidad.FULL_TIME, 
+				TipoTrabajo.PRESENCIAL, 
+				"Locacion",
 				"Categoria",
 				Double.valueOf(100),
 				new DateTime());
 		publicacion.add(publicacionVO);
 		
 		// Se registra y logea un postulante
-		String idPostulante = postulante.register(new PostulanteVO("", 
+		String idPostulante = postulante.register(new Postulante("", 
 				"postulanteTest44", 
 				"1234",
 				"Postu",
@@ -76,10 +73,10 @@ class ReporteControllerTests {
 		RequestTokenService.setRequestToken(idPostulante);
 		
 		// el postulante se postula a la publicacion antes creada
-		postulacion.add(new PostulacionVO(new PostulacionKeyWrapper(idPostulante, publicacionVO.getId())));
+		postulacion.add(new Postulacion(new PostulacionKeyWrapper(idPostulante, publicacionVO.getId())));
 		
 		// se obtiene la unica publicacion con postulacion
-		PublicacionVO r = reporteController.obtenerPublicacionMasSolicitada("112021");
+		Publicacion r = reporteController.obtenerPublicacionMasSolicitada("112021");
 		Assert.assertTrue(Objects.nonNull(r) && r.getId().equalsIgnoreCase(publicacionVO.getId()));
 	}
 	
@@ -87,39 +84,39 @@ class ReporteControllerTests {
 	public void obtenerCategoriasMasSeleccionadasTest() {
 		
 		// se agrega la empresa
-		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(),
+		Empresa empresaVO = new Empresa(UUID.randomUUID().toString(),
 				"empresa1",
 				"1234");
 		empresaRepository.saveAndFlush(empresaVO);
 		RequestTokenService.setRequestToken(empresaVO.getId());
 		
 		// se agregan dos publicacion con categoria Petrolera
-		publicacion.add(new PublicacionVO(empresaVO,
+		publicacion.add(new Publicacion(empresaVO,
 				"Titulo", 
 				"Descripcion", 
-				ModalidadEnum.FULL_TIME, 
-				TipoTrabajoEnum.PRESENCIAL, 
-				"Lugar",
+				Modalidad.FULL_TIME, 
+				TipoTrabajo.PRESENCIAL, 
+				"Locacion",
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime()));
-		publicacion.add(new PublicacionVO(empresaVO,
+		publicacion.add(new Publicacion(empresaVO,
 				"Titulo", 
 				"Descripcion", 
-				ModalidadEnum.FULL_TIME, 
-				TipoTrabajoEnum.PRESENCIAL, 
-				"Lugar",
+				Modalidad.FULL_TIME, 
+				TipoTrabajo.PRESENCIAL, 
+				"Locacion",
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime()));
 		
 		// se agrega una publicacion con categoria Bancaria
-		publicacion.add(new PublicacionVO(empresaVO,
+		publicacion.add(new Publicacion(empresaVO,
 				"Titulo", 
 				"Descripcion", 
-				ModalidadEnum.FULL_TIME, 
-				TipoTrabajoEnum.PRESENCIAL, 
-				"Lugar",
+				Modalidad.FULL_TIME, 
+				TipoTrabajo.PRESENCIAL, 
+				"Locacion",
 				"Bancaria",
 				Double.valueOf(100),
 				new DateTime()));
@@ -134,7 +131,7 @@ class ReporteControllerTests {
 	public void obtenerPublicacionMasAccesibleTest() {
 		
 		// se agrega la empresa
-		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(),
+		Empresa empresaVO = new Empresa(UUID.randomUUID().toString(),
 				"empresa1",
 				"1234");
 		empresaRepository.saveAndFlush(empresaVO);
@@ -142,24 +139,24 @@ class ReporteControllerTests {
 		
 		// se agregan publicaciones
 		// sin tareas ni skills pero no remoto ni parttime
-		PublicacionVO publicacionVO = new PublicacionVO(empresaVO,
+		Publicacion publicacionVO = new Publicacion(empresaVO,
 				"Publicacion1", 
 				"Descripcion", 
-				ModalidadEnum.FULL_TIME, 
-				TipoTrabajoEnum.PRESENCIAL, 
-				"Lugar",
+				Modalidad.FULL_TIME, 
+				TipoTrabajo.PRESENCIAL, 
+				"Locacion",
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
 		publicacion.add(publicacionVO);
 		
 		// remoto y partime pero con dos skills requeridos
-		publicacionVO = new PublicacionVO(empresaVO,
+		publicacionVO = new Publicacion(empresaVO,
 				"Publicacion2", 
 				"Descripcion", 
-				ModalidadEnum.PART_TIME, 
-				TipoTrabajoEnum.REMOTO, 
-				"Lugar",
+				Modalidad.PART_TIME, 
+				TipoTrabajo.REMOTO, 
+				"Locacion",
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
@@ -168,12 +165,12 @@ class ReporteControllerTests {
 		publicacion.add(publicacionVO);
 		
 		// remoto y part time con 1 skill requerido
-		publicacionVO = new PublicacionVO(empresaVO,
+		publicacionVO = new Publicacion(empresaVO,
 				"Publicacion3", 
 				"Descripcion", 
-				ModalidadEnum.PART_TIME, 
-				TipoTrabajoEnum.REMOTO, 
-				"Lugar",
+				Modalidad.PART_TIME, 
+				TipoTrabajo.REMOTO, 
+				"Locacion",
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
@@ -181,7 +178,7 @@ class ReporteControllerTests {
 		publicacion.add(publicacionVO);
 		
 		// se obtiene la categoria mas seleccionada
-		PublicacionVO r = reporteController.obtenerPublicacionMasAccesible();
+		Publicacion r = reporteController.obtenerPublicacionMasAccesible();
 		Assert.assertTrue(Objects.nonNull(r) && r.getTitulo().equalsIgnoreCase("Publicacion3"));	
 	}
 	
@@ -190,7 +187,7 @@ class ReporteControllerTests {
 	public void obtenerPublicacionMasExigenteTest() {
 		
 		// se agrega la empresa
-		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(),
+		Empresa empresaVO = new Empresa(UUID.randomUUID().toString(),
 				"empresa1",
 				"1234");
 		empresaRepository.saveAndFlush(empresaVO);
@@ -198,12 +195,12 @@ class ReporteControllerTests {
 		
 		// se agregan publicaciones
 		// sin skills
-		PublicacionVO publicacionVO = new PublicacionVO(empresaVO,
+		Publicacion publicacionVO = new Publicacion(empresaVO,
 				"Publicacion1", 
 				"Descripcion", 
-				ModalidadEnum.FULL_TIME, 
-				TipoTrabajoEnum.PRESENCIAL, 
-				"Lugar",
+				Modalidad.FULL_TIME, 
+				TipoTrabajo.PRESENCIAL, 
+				"Locacion",
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
@@ -211,12 +208,12 @@ class ReporteControllerTests {
 		
 		
 		//con 6 skills
-		publicacionVO = new PublicacionVO(empresaVO,
+		publicacionVO = new Publicacion(empresaVO,
 				"Publicacion2", 
 				"Descripcion", 
-				ModalidadEnum.PART_TIME, 
-				TipoTrabajoEnum.REMOTO, 
-				"Lugar",
+				Modalidad.PART_TIME, 
+				TipoTrabajo.REMOTO, 
+				"Locacion",
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
@@ -229,12 +226,12 @@ class ReporteControllerTests {
 		publicacion.add(publicacionVO);
 		
 		// con 2 skills
-		publicacionVO = new PublicacionVO(empresaVO,
+		publicacionVO = new Publicacion(empresaVO,
 				"Publicacion3", 
 				"Descripcion", 
-				ModalidadEnum.PART_TIME, 
-				TipoTrabajoEnum.REMOTO, 
-				"Lugar",
+				Modalidad.PART_TIME, 
+				TipoTrabajo.REMOTO, 
+				"Locacion",
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
@@ -243,7 +240,7 @@ class ReporteControllerTests {
 		publicacion.add(publicacionVO);
 		
 		// se obtiene la categoria mas seleccionada
-		PublicacionVO r = reporteController.obtenerPublicacionMasExigente();
+		Publicacion r = reporteController.obtenerPublicacionMasExigente();
 		Assert.assertTrue(Objects.nonNull(r) && r.getTitulo().equalsIgnoreCase("Publicacion2"));
 		
 	}

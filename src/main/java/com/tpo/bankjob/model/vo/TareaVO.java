@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.tpo.bankjob.model.Publicacion;
 import com.tpo.bankjob.model.utils.View;
 
 @Component
@@ -32,7 +33,7 @@ public class TareaVO {
 	@ManyToOne
     @JoinColumn(name="id_publicacion", nullable=false)
 	@JsonIgnore
-	private PublicacionVO publicacion;
+	private Publicacion publicacion;
 	
 	@JsonProperty("name")
 	@Column(name = "name")
@@ -62,11 +63,11 @@ public class TareaVO {
 		this.name = name;
 	}
 
-	public PublicacionVO getPublicacion() {
+	public Publicacion getPublicacion() {
 		return publicacion;
 	}
 
-	public void setPublicacion(PublicacionVO publicacion) {
+	public void setPublicacion(Publicacion publicacion) {
 		this.publicacion = publicacion;
 	}
 	

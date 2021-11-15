@@ -9,13 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.tpo.bankjob.model.Empresa;
 import com.tpo.bankjob.model.Publicacion;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.repository.PublicacionRepository;
-import com.tpo.bankjob.model.vo.EmpresaVO;
-import com.tpo.bankjob.model.vo.ModalidadEnum;
-import com.tpo.bankjob.model.vo.PublicacionVO;
-import com.tpo.bankjob.model.vo.TipoTrabajoEnum;
+import com.tpo.bankjob.model.vo.Modalidad;
+import com.tpo.bankjob.model.vo.TipoTrabajo;
 import com.tpo.bankjob.security.RequestTokenService;
 
 @SpringBootTest
@@ -31,21 +30,21 @@ public class PublicacionControllerTest {
     PublicacionRepository publicacionRepository;
 		
 	@Test
-	public void givenEmpresaYPublicacionVoValidasWhenAddPublicacionThenGuardarlaExitosamente() {
+	public void givenValidEmpresaVoAndPublicacionVoWhenPublicacionIsAddedThenSaveItSucessfully() {
 		
 		// given
-		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(),
+		Empresa empresaVO = new Empresa(UUID.randomUUID().toString(),
 				"empresa1",
 				"1234");
 		RequestTokenService.setRequestToken(empresaVO.getId());
 		empresaRepository.saveAndFlush(empresaVO);
 		
-		PublicacionVO publicacionVO = new PublicacionVO(empresaVO,
+		Publicacion publicacionVO = new Publicacion(empresaVO,
 				"Publicacion1", 
 				"Descripcion", 
-				ModalidadEnum.FULL_TIME, 
-				TipoTrabajoEnum.PRESENCIAL, 
-				"Lugar",
+				Modalidad.FULL_TIME, 
+				TipoTrabajo.PRESENCIAL, 
+				"locacion",
 				"Categoria",
 				Double.valueOf(100),
 				new DateTime());
@@ -54,11 +53,11 @@ public class PublicacionControllerTest {
 		publicacion.add(publicacionVO);
 		
 		// then
-		EmpresaVO resultEmpresa = null;
-		PublicacionVO resultPublicacion = null;
+		Empresa resultEmpresa = null;
+		Publicacion resultPublicacion = null;
 		
-		Optional<EmpresaVO> optResultEmpresa = empresaRepository.findById(empresaVO.getId());
-		Optional<PublicacionVO> optResultPublicacion = publicacionRepository.findById(publicacionVO.getId());
+		Optional<Empresa> optResultEmpresa = empresaRepository.findById(empresaVO.getId());
+		Optional<Publicacion> optResultPublicacion = publicacionRepository.findById(publicacionVO.getId());
 		
 		if(optResultEmpresa.isPresent())
 			resultEmpresa = optResultEmpresa.get();
@@ -74,21 +73,21 @@ public class PublicacionControllerTest {
 	
 	
 	@Test
-	public void givenPublicacionValidaSinTituloWhenSaveThenGuardarlaExistosamenteConTituloAutogenerado() {
+	public void givenValidPublicacionVOWithoutTitleWhenAddPublicacionThenGenerateTitleAndSaveItSucessfully() {
 		
 		// given
-		EmpresaVO empresaVO = new EmpresaVO(UUID.randomUUID().toString(),
+		Empresa empresaVO = new Empresa(UUID.randomUUID().toString(),
 				"empresa1",
 				"1234");
 		RequestTokenService.setRequestToken(empresaVO.getId());
 		empresaRepository.saveAndFlush(empresaVO);
 		
-		PublicacionVO publicacionVO = new PublicacionVO(empresaVO,
+		Publicacion publicacionVO = new Publicacion(empresaVO,
 				"", 
 				"Descripcion", 
-				ModalidadEnum.FULL_TIME, 
-				TipoTrabajoEnum.PRESENCIAL, 
-				"Lugar",
+				Modalidad.FULL_TIME, 
+				TipoTrabajo.PRESENCIAL, 
+				"locacion",
 				"Categoria",
 				Double.valueOf(100),
 				new DateTime());
@@ -97,15 +96,15 @@ public class PublicacionControllerTest {
 		publicacion.add(publicacionVO);
 		
 		// then
-		PublicacionVO resultPublicacion = null;
-		Optional<PublicacionVO> optResultPublicacion = publicacionRepository.findById(publicacionVO.getId());
+		Publicacion resultPublicacion = null;
+		Optional<Publicacion> optResultPublicacion = publicacionRepository.findById(publicacionVO.getId());
 	
 		if(optResultPublicacion.isPresent())
 			resultPublicacion = optResultPublicacion.get();
 		
 		Assert.assertNotNull(resultPublicacion);
 		Assert.assertTrue(!resultPublicacion.getTitulo().isBlank() 
-				&& resultPublicacion.getTitulo().contains(resultPublicacion.getLugar()));
+				&& resultPublicacion.getTitulo().contains(resultPublicacion.getLocacion()));
 		
 	}
 }

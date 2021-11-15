@@ -18,8 +18,6 @@ import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.utils.CredentialsWrapper;
 import com.tpo.bankjob.model.utils.LoginResponseWrapper;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.EmpresaVO;
-import com.tpo.bankjob.model.vo.PostulanteVO;
 import com.tpo.bankjob.security.UserAuthenticationService;
 
 import lombok.AllArgsConstructor;
@@ -31,45 +29,26 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 final class PublicUsersController {
-	
-	@Autowired
-	Empresa empresa;
-	
-	@Autowired
-	Postulante postulante;
-	
+		
 	@NonNull
 	UserAuthenticationService authentication;
 
 	@JsonView(View.Public.class)
-	@PostMapping("/empresa/register")
-	String register(@RequestBody EmpresaVO empresaVO,
-			BindingResult bindingResult) throws RuntimeException {
-		return empresa.register(empresaVO);
-	}
-	
-	@JsonView(View.Public.class)
-	@PostMapping("/postulante/register")
-	String register(@RequestBody PostulanteVO postulanteVO,
-			BindingResult bindingResult) throws RuntimeException {
-		return postulante.register(postulanteVO);
-	}
-
-	@JsonView(View.Public.class)
 	@PostMapping("/login")
-	@ResponseBody LoginResponseWrapper login(@RequestBody CredentialsWrapper credentials) {
+	@ResponseBody LoginResponseWrapper login(
+			@RequestBody CredentialsWrapper credentials) {
 		
 		UserDetails user = authentication.login(
 				credentials.username, credentials.password);
 		
 		String uuid;
 		boolean isEmpresa = false;
-		if(user instanceof EmpresaVO) {
-			uuid = ((EmpresaVO)user).getId();
+		if(user instanceof Empresa) {
+			uuid = ((Empresa)user).getId();
 			isEmpresa = true;
 		}
 		else {
-			uuid = ((PostulanteVO)user).getId();
+			uuid = ((Postulante)user).getId();
 		}
 		
 		return new LoginResponseWrapper(uuid, isEmpresa);

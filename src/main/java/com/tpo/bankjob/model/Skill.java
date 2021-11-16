@@ -1,11 +1,11 @@
-package com.tpo.bankjob.model.vo;
+package com.tpo.bankjob.model;
+
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -14,46 +14,47 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.tpo.bankjob.model.Publicacion;
 import com.tpo.bankjob.model.utils.View;
 
 @Component
 @Entity
-@Table(name = "tarea")
-@JsonRootName(value = "tarea")
+@Table(name = "skill")
+@JsonRootName(value = "skill")
 @JsonView(View.Public.class)
-public class TareaVO {
+public class Skill implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2600587232392521869L;
+
 	@Id 
 	@GeneratedValue
 	@Column(name = "id")
 	@JsonIgnore
 	private Long id;
 	
-	@ManyToOne
-    @JoinColumn(name="id_publicacion", nullable=false)
+	@Column(name = "ownerId")
 	@JsonIgnore
-	private Publicacion publicacion;
+	private String ownerId;
 	
 	@JsonProperty("name")
 	@Column(name = "name")
 	private String name;
 	
+	@JsonProperty("mandatory")
+	@Column(name = "mandatory")
+	private boolean isMandatory;
 	
-	public TareaVO() {}
+	public Skill() {
+		this.isMandatory = false;
+	}
 	
-	public TareaVO(Long id, String name, boolean isMandatory) {
+	public Skill(Long id, String name, boolean isMandatory) {
 		this();
 		this.id = id;
 		this.name = name;
-	}
-	
-	public Long getId() {	
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
+		this.isMandatory = isMandatory;
 	}
 	
 	public String getName() {
@@ -62,13 +63,16 @@ public class TareaVO {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public Publicacion getPublicacion() {
-		return publicacion;
+	public boolean isMandatory() {
+		return isMandatory;
 	}
-
-	public void setPublicacion(Publicacion publicacion) {
-		this.publicacion = publicacion;
+	public void setMandatory(boolean isMandatory) {
+		this.isMandatory = isMandatory;
 	}
-	
+	public String getOwnerId() {
+		return ownerId;
+	}
+	public Object setOwnerId(String ownerId) {
+		return this.ownerId = ownerId;
+	}
 }

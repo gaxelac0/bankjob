@@ -26,14 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.base.Supplier;
+import com.tpo.bankjob.model.Modalidad;
 import com.tpo.bankjob.model.Postulacion;
 import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.Publicacion;
+import com.tpo.bankjob.model.TipoTrabajo;
 import com.tpo.bankjob.model.exception.BadFormatException;
 import com.tpo.bankjob.model.exception.InvalidActionException;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.Modalidad;
-import com.tpo.bankjob.model.vo.TipoTrabajo;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -38,6 +38,6 @@ final class PostulacionController {
 	}
 
 	public List<Postulacion> getPostulaciones() {
-		return postulacion.findAll();
+		return postulacion.getPostulaciones();
 	}
 }

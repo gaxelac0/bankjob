@@ -1,6 +1,6 @@
 package com.tpo.bankjob.strategy;
 
-import com.tpo.bankjob.model.vo.Notificacion;
+import com.tpo.bankjob.model.Notificacion;
 
 public class Notificador {
 	private NotificationStrategy strategy;

@@ -1,6 +1,6 @@
 package com.tpo.bankjob.model.utils;
 
-import com.tpo.bankjob.model.vo.CanalNotificacion;
+import com.tpo.bankjob.model.CanalNotificacion;
 import com.tpo.bankjob.strategy.NotificationByMail;
 import com.tpo.bankjob.strategy.NotificationByPushService;
 import com.tpo.bankjob.strategy.NotificationBySlackAPI;

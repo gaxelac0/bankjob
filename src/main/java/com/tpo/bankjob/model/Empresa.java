@@ -26,8 +26,6 @@ import com.tpo.bankjob.model.observer.IObservable;
 import com.tpo.bankjob.model.observer.IObserver;
 import com.tpo.bankjob.model.utils.StrategyFactory;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.CanalNotificacion;
-import com.tpo.bankjob.model.vo.Notificacion;
 import com.tpo.bankjob.strategy.Notificador;
 
 @Component
@@ -36,12 +34,12 @@ import com.tpo.bankjob.strategy.Notificador;
 @JsonRootName(value = "empresa")
 @JsonView(View.Public.class)
 public class Empresa implements UserDetails, IObserver {
-
-	private static final long serialVersionUID = 4384739614806100984L;
 	
 	@Autowired
 	@Transient
-	private EmpresaDao empresaDao;
+	EmpresaDao empresaDao;
+
+	private static final long serialVersionUID = 4384739614806100984L;
 
 	@JsonView(View.Public.class)
 	@JsonProperty("id")

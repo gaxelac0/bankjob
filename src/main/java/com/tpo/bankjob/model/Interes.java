@@ -1,4 +1,4 @@
-package com.tpo.bankjob.model.vo;
+package com.tpo.bankjob.model;
 
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ import com.tpo.bankjob.model.utils.View;
 @Table(name = "interes")
 @JsonRootName(value = "interes")
 @JsonView(View.Public.class)
-public class InteresVO implements Serializable {
+public class Interes implements Serializable {
 	
 	private static final long serialVersionUID = -2653294078098750944L;
 
@@ -41,9 +41,9 @@ public class InteresVO implements Serializable {
 	@Column(name = "categoria")
 	private String categoria;
 	
-	public InteresVO() {}
+	public Interes() {}
 	
-	public InteresVO(Long id, String categoria) {
+	public Interes(Long id, String categoria) {
 		this();
 		this.id = id;
 		this.categoria = categoria;

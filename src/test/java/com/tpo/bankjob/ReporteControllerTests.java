@@ -13,14 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.tpo.bankjob.controller.ReporteController;
 import com.tpo.bankjob.model.Empresa;
+import com.tpo.bankjob.model.Modalidad;
 import com.tpo.bankjob.model.Postulacion;
 import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.Publicacion;
+import com.tpo.bankjob.model.Skill;
+import com.tpo.bankjob.model.TipoTrabajo;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.utils.PostulacionKeyWrapper;
-import com.tpo.bankjob.model.vo.Modalidad;
-import com.tpo.bankjob.model.vo.SkillVO;
-import com.tpo.bankjob.model.vo.TipoTrabajo;
 import com.tpo.bankjob.security.RequestTokenService;
 
 @SpringBootTest
@@ -160,8 +160,8 @@ class ReporteControllerTests {
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
-		publicacionVO.getSkills().add(new SkillVO(null, "Java", true));
-		publicacionVO.getSkills().add(new SkillVO(null, "React", true));
+		publicacionVO.getSkills().add(new Skill(null, "Java", true));
+		publicacionVO.getSkills().add(new Skill(null, "React", true));
 		publicacion.add(publicacionVO);
 		
 		// remoto y part time con 1 skill requerido
@@ -174,7 +174,7 @@ class ReporteControllerTests {
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
-		publicacionVO.getSkills().add(new SkillVO(null, "Cobol", true));
+		publicacionVO.getSkills().add(new Skill(null, "Cobol", true));
 		publicacion.add(publicacionVO);
 		
 		// se obtiene la categoria mas seleccionada
@@ -217,12 +217,12 @@ class ReporteControllerTests {
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
-		publicacionVO.getSkills().add(new SkillVO(null, "Java", true));
-		publicacionVO.getSkills().add(new SkillVO(null, "React", true));
-		publicacionVO.getSkills().add(new SkillVO(null, "Springboot", true));
-		publicacionVO.getSkills().add(new SkillVO(null, "Hibernate", true));
-		publicacionVO.getSkills().add(new SkillVO(null, "JavaScript", true));
-		publicacionVO.getSkills().add(new SkillVO(null, "Chakra", true));
+		publicacionVO.getSkills().add(new Skill(null, "Java", true));
+		publicacionVO.getSkills().add(new Skill(null, "React", true));
+		publicacionVO.getSkills().add(new Skill(null, "Springboot", true));
+		publicacionVO.getSkills().add(new Skill(null, "Hibernate", true));
+		publicacionVO.getSkills().add(new Skill(null, "JavaScript", true));
+		publicacionVO.getSkills().add(new Skill(null, "Chakra", true));
 		publicacion.add(publicacionVO);
 		
 		// con 2 skills
@@ -235,8 +235,8 @@ class ReporteControllerTests {
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
-		publicacionVO.getSkills().add(new SkillVO(null, "Java", true));
-		publicacionVO.getSkills().add(new SkillVO(null, "Cobol", true));
+		publicacionVO.getSkills().add(new Skill(null, "Java", true));
+		publicacionVO.getSkills().add(new Skill(null, "Cobol", true));
 		publicacion.add(publicacionVO);
 		
 		// se obtiene la categoria mas seleccionada

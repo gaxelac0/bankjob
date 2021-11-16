@@ -1,8 +1,5 @@
 package com.tpo.bankjob.model.dao;
 
-import static lombok.AccessLevel.PACKAGE;
-import static lombok.AccessLevel.PRIVATE;
-
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,12 +11,7 @@ import com.tpo.bankjob.model.exception.AlreadyRegisteredUserException;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.security.UserCrudService;
 
-import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
-
 @Component
-@FieldDefaults(level = PRIVATE, makeFinal = true)
-@AllArgsConstructor(access = PACKAGE)
 public class EmpresaDao {
 	
 	@Autowired
@@ -27,7 +19,7 @@ public class EmpresaDao {
 
 	@Autowired
 	EmpresaRepository empresaRepository;
-
+	
 	public String register(Empresa empresaVO) {
 		
 		Empresa empresa =  empresaRepository.findByUsername(empresaVO.getUsername());

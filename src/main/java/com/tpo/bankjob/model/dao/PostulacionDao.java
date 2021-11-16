@@ -16,18 +16,13 @@ import com.tpo.bankjob.model.exception.PublicacionNotFoundException;
 import com.tpo.bankjob.model.repository.PostulacionRepository;
 import com.tpo.bankjob.model.repository.PostulanteRepository;
 import com.tpo.bankjob.model.repository.PublicacionRepository;
-import com.tpo.bankjob.model.repository.SkillRepository;
 import com.tpo.bankjob.model.utils.PostulacionKeyWrapper;
 import com.tpo.bankjob.model.utils.PostulacionUtils;
 import com.tpo.bankjob.security.RequestTokenService;
-import com.tpo.bankjob.security.UserCrudService;
 
 @Component
 public class PostulacionDao {
 		
-	@Autowired
-	UserCrudService users;
-	
 	@Autowired
 	PublicacionRepository publicacionRepository;
 	
@@ -36,9 +31,7 @@ public class PostulacionDao {
 	
 	@Autowired
 	PostulacionRepository postulacionRepository;
-	
-	@Autowired
-	SkillRepository skillRepository;
+
 	
 	public Postulacion add(Postulacion postulacionVO) throws RuntimeException {
 		

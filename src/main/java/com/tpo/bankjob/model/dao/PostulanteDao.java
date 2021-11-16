@@ -7,13 +7,13 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tpo.bankjob.model.Interes;
 import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.exception.AlreadyRegisteredUserException;
 import com.tpo.bankjob.model.exception.PostulanteNotFoundException;
 import com.tpo.bankjob.model.repository.InteresRepository;
 import com.tpo.bankjob.model.repository.PostulanteRepository;
 import com.tpo.bankjob.model.repository.SkillRepository;
-import com.tpo.bankjob.model.vo.InteresVO;
 import com.tpo.bankjob.security.RequestTokenService;
 import com.tpo.bankjob.security.UserCrudService;
 
@@ -56,7 +56,7 @@ public class PostulanteDao {
 		return postulanteRepository.findById(id);
 	}
 
-	public InteresVO addInteres(InteresVO interes) {
+	public Interes addInteres(Interes interes) {
 					
 		// el postulante debe existir
 		Optional<Postulante> opt = postulanteRepository.findById(

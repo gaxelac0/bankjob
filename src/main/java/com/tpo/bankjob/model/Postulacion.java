@@ -39,9 +39,8 @@ public class Postulacion {
 	
 	@Autowired
 	@Transient
-	private PostulacionDao postulacionDao;
+	PostulacionDao postulacionDao;
 	
-
 	@JsonView(View.Public.class)
 	@EmbeddedId
 	private PostulacionKeyWrapper id;
@@ -138,11 +137,11 @@ public class Postulacion {
 		return postulacionDao.add(postulacionVO);
 	}
 
-	public List<Postulacion> findAll() {
+	public List<Postulacion> getPostulaciones() {
 		return postulacionDao.findAll();
 	}
 
-	public Optional<Postulacion> findById(PostulacionKeyWrapper id) {
+	public Optional<Postulacion> get(PostulacionKeyWrapper id) {
 		return postulacionDao.findById(id);
 	}
 }

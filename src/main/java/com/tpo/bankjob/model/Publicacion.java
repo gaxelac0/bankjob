@@ -40,10 +40,6 @@ import com.tpo.bankjob.model.state.EstadoPublicacion;
 import com.tpo.bankjob.model.state.EstadoPublicacionAbierto;
 import com.tpo.bankjob.model.state.EstadoPublicacionCerrado;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.Modalidad;
-import com.tpo.bankjob.model.vo.SkillVO;
-import com.tpo.bankjob.model.vo.TareaVO;
-import com.tpo.bankjob.model.vo.TipoTrabajo;
 
 @Component
 @Entity
@@ -52,12 +48,12 @@ import com.tpo.bankjob.model.vo.TipoTrabajo;
 @JsonView(View.Public.class)
 public class Publicacion implements Serializable, IObservable {
 	
-	private static final long serialVersionUID = 6672245192915168413L;
-	
 	@Autowired
 	@Transient
-	private PublicacionDao publicacionDao;
-
+	PublicacionDao publicacionDao;
+	
+	private static final long serialVersionUID = 6672245192915168413L;
+	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -128,14 +124,14 @@ public class Publicacion implements Serializable, IObservable {
 	@Column(name = "skills")	
     @OneToMany(mappedBy = "ownerId")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private  List<SkillVO> skills;
+	private  List<Skill> skills;
 	
 	@JsonView(View.Public.class)
 	@JsonProperty("tareas")
 	@Column(name = "tareas")	
     @OneToMany(mappedBy = "publicacion")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private  List<TareaVO> tareas;
+	private  List<Tarea> tareas;
 	
 	@JsonView(View.Public.class)
 	@Column(name = "img")
@@ -273,19 +269,19 @@ public class Publicacion implements Serializable, IObservable {
 		this.postulaciones = postulaciones;
 	}
 
-	public List<SkillVO> getSkills() {
+	public List<Skill> getSkills() {
 		return skills;
 	}
 
-	public void setSkills(List<SkillVO> skills) {
+	public void setSkills(List<Skill> skills) {
 		this.skills = skills;
 	}
 
-	public List<TareaVO> getTareas() {
+	public List<Tarea> getTareas() {
 		return tareas;
 	}
 
-	public void setTareas(List<TareaVO> tareas) {
+	public void setTareas(List<Tarea> tareas) {
 		this.tareas = tareas;
 	}
 

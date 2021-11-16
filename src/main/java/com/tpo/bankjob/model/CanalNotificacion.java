@@ -1,4 +1,4 @@
-package com.tpo.bankjob.model.vo;
+package com.tpo.bankjob.model;
 
 public enum CanalNotificacion {
 	

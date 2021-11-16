@@ -3,7 +3,7 @@ package com.tpo.bankjob.strategy.adapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.tpo.bankjob.model.vo.Notificacion;
+import com.tpo.bankjob.model.Notificacion;
 
 public class PushAdapter implements PushAdapterNotifier {
 	

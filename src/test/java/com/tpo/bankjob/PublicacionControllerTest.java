@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.tpo.bankjob.model.Empresa;
+import com.tpo.bankjob.model.Modalidad;
 import com.tpo.bankjob.model.Publicacion;
+import com.tpo.bankjob.model.TipoTrabajo;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.repository.PublicacionRepository;
-import com.tpo.bankjob.model.vo.Modalidad;
-import com.tpo.bankjob.model.vo.TipoTrabajo;
 import com.tpo.bankjob.security.RequestTokenService;
 
 @SpringBootTest

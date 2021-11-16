@@ -26,8 +26,6 @@ import com.tpo.bankjob.model.observer.IObservable;
 import com.tpo.bankjob.model.observer.IObserver;
 import com.tpo.bankjob.model.utils.StrategyFactory;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.CanalNotificacion;
-import com.tpo.bankjob.model.vo.Notificacion;
 import com.tpo.bankjob.strategy.Notificador;
 
 @Component

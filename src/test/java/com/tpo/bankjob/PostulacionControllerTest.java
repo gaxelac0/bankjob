@@ -12,16 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.tpo.bankjob.model.Empresa;
+import com.tpo.bankjob.model.Modalidad;
 import com.tpo.bankjob.model.Postulacion;
 import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.Publicacion;
+import com.tpo.bankjob.model.Skill;
+import com.tpo.bankjob.model.TipoTrabajo;
 import com.tpo.bankjob.model.exception.InsufficientSkillsForPostulacionException;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.repository.PublicacionRepository;
 import com.tpo.bankjob.model.utils.PostulacionKeyWrapper;
-import com.tpo.bankjob.model.vo.Modalidad;
-import com.tpo.bankjob.model.vo.SkillVO;
-import com.tpo.bankjob.model.vo.TipoTrabajo;
 import com.tpo.bankjob.security.RequestTokenService;
 
 @SpringBootTest
@@ -102,7 +102,7 @@ public class PostulacionControllerTest {
 				"Categoria",
 				Double.valueOf(100),
 				new DateTime());
-		publicacionVO.getSkills().add(new SkillVO(null, "Java", true)); // required skill
+		publicacionVO.getSkills().add(new Skill(null, "Java", true)); // required skill
 		
 		//  when
 		publicacion.add(publicacionVO);

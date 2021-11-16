@@ -2,8 +2,8 @@ List of Endpoints
 
 | # | URI                                | Method | Details                                                                              				| Comentarios |
 | - | ---------------------------------- | ------ | --------------------------------------------------------------------------------------------------- | ----------- |
-| 1 | /public/users/empresa/register     | POST   | Registra una empresa                                                                                | |
-| 2 | /public/users/postulantes/register | POST   | Registra un postulante                                                                              | |
+| 1 | /empresa/register     		     | POST   | Registra una empresa                                                                                | |
+| 2 | /postulantes/register 			 | POST   | Registra un postulante                                                                              | |
 | 3 | /public/users/login 				 | POST   | Logea con usuario y contraseña y obtiene un token.                                                  | Recibe el bearer token, el cual identifica a la empresa o al postulante. Informa en la respuesta si el token pertenece a una empresa o no. |
 | 4 | /empresa/{id}		 				 | GET	  | Obtiene los detalles de una empresa                                                                 ||
 | 5 | /postulante/{id}		 			 | GET	  | Obtiene los detalles de un postulante                                                               ||

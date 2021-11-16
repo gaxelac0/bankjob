@@ -8,11 +8,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.tpo.bankjob.model.CanalNotificacion;
 import com.tpo.bankjob.model.Empresa;
 import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.repository.PostulanteRepository;
-import com.tpo.bankjob.model.vo.CanalNotificacion;
 import com.tpo.bankjob.security.UserCrudService;
 
 @Configuration

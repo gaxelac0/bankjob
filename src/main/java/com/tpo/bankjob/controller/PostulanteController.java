@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.tpo.bankjob.model.Interes;
 import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.exception.PostulanteNotFoundException;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.InteresVO;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -56,8 +56,8 @@ final class PostulanteController {
 	
 	@JsonView(View.Public.class)
 	@PostMapping("interes/add")
-	@ResponseBody InteresVO addInteres(
-			@RequestBody InteresVO interes,
+	@ResponseBody Interes addInteres(
+			@RequestBody Interes interes,
 			BindingResult bindingResult) {
 		return postulante.addInteres(interes);
 	}

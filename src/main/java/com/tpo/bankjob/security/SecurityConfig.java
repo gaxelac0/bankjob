@@ -37,6 +37,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 			new OrRequestMatcher(
 					Arrays.asList(
 						new AntPathRequestMatcher("/public/**"),
+						new AntPathRequestMatcher("/empresa/register/**"),
+						new AntPathRequestMatcher("/postulante/register/**"),
 						new AntPathRequestMatcher("/reporte/**")
 					)
 			);

@@ -27,9 +27,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.dao.PostulanteDao;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.CanalNotificacion;
-import com.tpo.bankjob.model.vo.InteresVO;
-import com.tpo.bankjob.model.vo.SkillVO;
 
 @Component
 @Entity
@@ -86,14 +83,14 @@ public class Postulante implements UserDetails {
 	@Column(name = "skills")	
     @OneToMany(mappedBy = "ownerId")
 	@LazyCollection(LazyCollectionOption.FALSE)
-    private List<SkillVO> skills;
+    private List<Skill> skills;
 	
 	@JsonView(View.Public.class)
 	@JsonProperty("intereses")
 	@Column(name = "intereses")	
     @OneToMany(mappedBy = "idPostulante")
 	@LazyCollection(LazyCollectionOption.FALSE)
-    private List<InteresVO> intereses;
+    private List<Interes> intereses;
 	
 	@JsonView(View.Public.class)
 	@JsonProperty("postulaciones")
@@ -174,11 +171,11 @@ public class Postulante implements UserDetails {
 		this.postulaciones = postulaciones;
 	}
 
-	public List<SkillVO> getSkills() {
+	public List<Skill> getSkills() {
 		return skills;
 	}
 
-	public void setSkills(List<SkillVO> skills) {
+	public void setSkills(List<Skill> skills) {
 		this.skills = skills;
 	}
 	
@@ -190,7 +187,7 @@ public class Postulante implements UserDetails {
 		this.canalNotificacion = canalNotificacion;
 	}
 
-	public void setIntereses(List<InteresVO> intereses) {
+	public void setIntereses(List<Interes> intereses) {
 		this.intereses = intereses;
 	}
 	
@@ -228,7 +225,7 @@ public class Postulante implements UserDetails {
 		return true;
 	}
 
-	public List<InteresVO> getIntereses() {
+	public List<Interes> getIntereses() {
 		return this.intereses;
 	}
 
@@ -251,7 +248,7 @@ public class Postulante implements UserDetails {
 	}
 
 	@JsonView(View.Internal.class)
-	public InteresVO addInteres(InteresVO interes) {
+	public Interes addInteres(Interes interes) {
 		return postulanteDao.addInteres(interes);
 	}
 }

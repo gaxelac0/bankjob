@@ -4,17 +4,22 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
+import org.joda.time.Instant;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.google.common.collect.Lists;
 import com.tpo.bankjob.model.Empresa;
 import com.tpo.bankjob.model.Modalidad;
 import com.tpo.bankjob.model.Publicacion;
+import com.tpo.bankjob.model.Skill;
 import com.tpo.bankjob.model.TipoTrabajo;
+import com.tpo.bankjob.model.builder.PublicacionVOBuilder;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.repository.PublicacionRepository;
+import com.tpo.bankjob.model.vo.PublicacionVO;
 import com.tpo.bankjob.security.RequestTokenService;
 
 @SpringBootTest
@@ -39,25 +44,27 @@ public class PublicacionControllerTest {
 		RequestTokenService.setRequestToken(empresaVO.getId());
 		empresaRepository.saveAndFlush(empresaVO);
 		
-		Publicacion publicacionVO = new Publicacion(empresaVO,
-				"Publicacion1", 
-				"Descripcion", 
-				Modalidad.FULL_TIME, 
-				TipoTrabajo.PRESENCIAL, 
-				"locacion",
-				"Categoria",
-				Double.valueOf(100),
-				new DateTime());
+		// (#ADOO) aplicando builder pattern
+		PublicacionVO vo = new PublicacionVOBuilder()
+				.setTitulo("NODE JS 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.FULL_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.build();
 		
 		//  when
-		publicacion.add(publicacionVO);
+		publicacion.add(vo);
 		
 		// then
 		Empresa resultEmpresa = null;
 		Publicacion resultPublicacion = null;
 		
 		Optional<Empresa> optResultEmpresa = empresaRepository.findById(empresaVO.getId());
-		Optional<Publicacion> optResultPublicacion = publicacionRepository.findById(publicacionVO.getId());
+		Optional<Publicacion> optResultPublicacion = publicacionRepository.findById(vo.getId());
 		
 		if(optResultEmpresa.isPresent())
 			resultEmpresa = optResultEmpresa.get();
@@ -82,15 +89,16 @@ public class PublicacionControllerTest {
 		RequestTokenService.setRequestToken(empresaVO.getId());
 		empresaRepository.saveAndFlush(empresaVO);
 		
-		Publicacion publicacionVO = new Publicacion(empresaVO,
-				"", 
-				"Descripcion", 
-				Modalidad.FULL_TIME, 
-				TipoTrabajo.PRESENCIAL, 
-				"locacion",
-				"Categoria",
-				Double.valueOf(100),
-				new DateTime());
+		PublicacionVO publicacionVO = new PublicacionVOBuilder()
+				//.setTitulo("NODE JS 100% remoto") sin titulo
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.FULL_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.build();
 		
 		//  when
 		publicacion.add(publicacionVO);

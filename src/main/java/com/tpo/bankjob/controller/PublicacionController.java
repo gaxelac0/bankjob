@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.Publicacion;
+import com.tpo.bankjob.model.builder.PublicacionVOBuilder;
 import com.tpo.bankjob.model.exception.PublicacionNotFoundException;
-import com.tpo.bankjob.model.utils.View;
+import com.tpo.bankjob.model.vo.PublicacionVO;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -39,50 +39,49 @@ final class PublicacionController {
 		publicacion.transicionarPublicaciones();
 	}
 	
-	@JsonView(View.Public.class)
 	@PostMapping("/add")
-	@ResponseBody Publicacion add(
-			@RequestBody Publicacion publicacionVO,
+	@ResponseBody PublicacionVO add(
+			@RequestBody PublicacionVO publicacionVO,
 			BindingResult bindingResult) {
 		return publicacion.add(publicacionVO);
 	}
 	
-	@JsonView(View.Public.class)
 	@PostMapping("/open/{id}")
-	@ResponseBody Publicacion open(
+	@ResponseBody boolean open(
 			@PathVariable String id) {
-				
 		return publicacion.open(getPublicacionById(id));
 	}
 	
-	@JsonView(View.Public.class)
 	@GetMapping("/all")
-	@ResponseBody List<Publicacion> getPublicaciones() {
-		return publicacion.findAll();
-	}
-	
-	@JsonView(View.Public.class)
-	@GetMapping("/all/{categoria}")
-	@ResponseBody List<Publicacion> getPublicacionesByCategoria(
-			@PathVariable String categoria) {
+	@ResponseBody List<PublicacionVO> getPublicaciones() {
 		return publicacion.findAll().stream()
-				.filter((p) -> p.getCategoria().equalsIgnoreCase(categoria))
+				.map((p) -> new PublicacionVOBuilder(p).build())
 				.collect(Collectors.toList());
 	}
 	
-	@JsonView(View.Internal.class)
+	@GetMapping("/all/{categoria}")
+	@ResponseBody List<PublicacionVO> getPublicacionesByCategoria(
+			@PathVariable String categoria) {
+		return publicacion.findAll().stream()
+				.filter((p) -> p.getCategoria().equalsIgnoreCase(categoria))
+				.map((p) -> new PublicacionVOBuilder(p).build())
+				.collect(Collectors.toList());
+	}
+	
 	@GetMapping("/{id}")
 	@ResponseBody Publicacion getPublicacionById(
 			@PathVariable String id) {
-		return publicacion.get(id).map((p) -> p).orElseThrow(() -> new PublicacionNotFoundException(id));
+		return publicacion
+				.get(id)
+				.orElseThrow(() -> new PublicacionNotFoundException(id));
 	}
 	
-	@JsonView(View.ExtendedPublic.class)
 	@GetMapping("/empresa/{idEmpresa}")
-	@ResponseBody List<Publicacion> getPublicacionesByIdEmpresa(
+	@ResponseBody List<PublicacionVO> getPublicacionesByIdEmpresa(
 			@PathVariable String idEmpresa) {
 		return publicacion.findAll().stream()
 				.filter((p) -> p.getEmpresa().getId().equalsIgnoreCase(idEmpresa))
+				.map((p) -> new PublicacionVOBuilder(p).build())
 				.collect(Collectors.toList());
 	}
 	

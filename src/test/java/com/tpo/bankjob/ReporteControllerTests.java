@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.google.common.collect.Lists;
 import com.tpo.bankjob.controller.ReporteController;
 import com.tpo.bankjob.model.Empresa;
 import com.tpo.bankjob.model.Modalidad;
@@ -19,8 +20,10 @@ import com.tpo.bankjob.model.Postulante;
 import com.tpo.bankjob.model.Publicacion;
 import com.tpo.bankjob.model.Skill;
 import com.tpo.bankjob.model.TipoTrabajo;
+import com.tpo.bankjob.model.builder.PublicacionVOBuilder;
 import com.tpo.bankjob.model.repository.EmpresaRepository;
 import com.tpo.bankjob.model.utils.PostulacionKeyWrapper;
+import com.tpo.bankjob.model.vo.PublicacionVO;
 import com.tpo.bankjob.security.RequestTokenService;
 
 @SpringBootTest
@@ -52,20 +55,23 @@ class ReporteControllerTests {
 		RequestTokenService.setRequestToken(empresaVO.getId());
 		
 		// se agrega la publicacion
-		Publicacion publicacionVO = new Publicacion(empresaVO,
-				"Titulo", 
-				"Descripcion", 
-				Modalidad.FULL_TIME, 
-				TipoTrabajo.PRESENCIAL, 
-				"Locacion",
-				"Categoria",
-				Double.valueOf(100),
-				new DateTime());
-		publicacion.add(publicacionVO);
+		// (#ADOO) aplicando builder pattern
+		PublicacionVO vo = new PublicacionVOBuilder()
+				.setTitulo("NODE JS 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.FULL_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.build();
+		
+		publicacion.add(vo);
 		
 		// Se registra y logea un postulante
 		String idPostulante = postulante.register(new Postulante("", 
-				"postulanteTest44", 
+				"postulanteTest66", 
 				"1234",
 				"Postu",
 				"Lante",
@@ -73,11 +79,11 @@ class ReporteControllerTests {
 		RequestTokenService.setRequestToken(idPostulante);
 		
 		// el postulante se postula a la publicacion antes creada
-		postulacion.add(new Postulacion(new PostulacionKeyWrapper(idPostulante, publicacionVO.getId())));
+		postulacion.add(new Postulacion(new PostulacionKeyWrapper(idPostulante, vo.getId())));
 		
 		// se obtiene la unica publicacion con postulacion
 		Publicacion r = reporteController.obtenerPublicacionMasSolicitada("112021");
-		Assert.assertTrue(Objects.nonNull(r) && r.getId().equalsIgnoreCase(publicacionVO.getId()));
+		Assert.assertTrue(Objects.nonNull(r) && r.getId().equalsIgnoreCase(vo.getId()));
 	}
 	
 	@Test
@@ -91,35 +97,38 @@ class ReporteControllerTests {
 		RequestTokenService.setRequestToken(empresaVO.getId());
 		
 		// se agregan dos publicacion con categoria Petrolera
-		publicacion.add(new Publicacion(empresaVO,
-				"Titulo", 
-				"Descripcion", 
-				Modalidad.FULL_TIME, 
-				TipoTrabajo.PRESENCIAL, 
-				"Locacion",
-				"Petrolera",
-				Double.valueOf(100),
-				new DateTime()));
-		publicacion.add(new Publicacion(empresaVO,
-				"Titulo", 
-				"Descripcion", 
-				Modalidad.FULL_TIME, 
-				TipoTrabajo.PRESENCIAL, 
-				"Locacion",
-				"Petrolera",
-				Double.valueOf(100),
-				new DateTime()));
+		publicacion.add(new PublicacionVOBuilder()
+				.setTitulo("NODE JS 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.FULL_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.build());
+		publicacion.add(new PublicacionVOBuilder()
+				.setTitulo("NODE JS 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.FULL_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.build());
 		
 		// se agrega una publicacion con categoria Bancaria
-		publicacion.add(new Publicacion(empresaVO,
-				"Titulo", 
-				"Descripcion", 
-				Modalidad.FULL_TIME, 
-				TipoTrabajo.PRESENCIAL, 
-				"Locacion",
-				"Bancaria",
-				Double.valueOf(100),
-				new DateTime()));
+		publicacion.add(new PublicacionVOBuilder()
+				.setTitulo("NODE JS 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.FULL_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Bancaria")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.build());
 		
 		// se obtiene la categoria mas seleccionada
 		String r = reporteController.obtenerCategoriasMasSeleccionadas(1).get(0);
@@ -139,46 +148,53 @@ class ReporteControllerTests {
 		
 		// se agregan publicaciones
 		// sin tareas ni skills pero no remoto ni parttime
-		Publicacion publicacionVO = new Publicacion(empresaVO,
-				"Publicacion1", 
-				"Descripcion", 
-				Modalidad.FULL_TIME, 
-				TipoTrabajo.PRESENCIAL, 
-				"Locacion",
-				"Petrolera",
-				Double.valueOf(100),
-				new DateTime());
+		PublicacionVO publicacionVO = new PublicacionVOBuilder()
+				.setTitulo("NODE JS 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.FULL_TIME)
+				.setTipoTrabajo(TipoTrabajo.PRESENCIAL)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.build();
 		publicacion.add(publicacionVO);
 		
 		// remoto y partime pero con dos skills requeridos
-		publicacionVO = new Publicacion(empresaVO,
-				"Publicacion2", 
-				"Descripcion", 
-				Modalidad.PART_TIME, 
-				TipoTrabajo.REMOTO, 
-				"Locacion",
-				"Petrolera",
-				Double.valueOf(100),
-				new DateTime());
-		publicacionVO.getSkills().add(new Skill(null, "Java", true));
-		publicacionVO.getSkills().add(new Skill(null, "React", true));
+		publicacionVO = new PublicacionVOBuilder()
+				.setTitulo("NODE JS 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.PART_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.setSkills(Lists.newArrayList(
+						new Skill(null, "Java", true), 
+						new Skill(null, "React", true))
+						)
+				.build();
 		publicacion.add(publicacionVO);
 		
 		// remoto y part time con 1 skill requerido
-		publicacionVO = new Publicacion(empresaVO,
-				"Publicacion3", 
-				"Descripcion", 
-				Modalidad.PART_TIME, 
-				TipoTrabajo.REMOTO, 
-				"Locacion",
-				"Petrolera",
-				Double.valueOf(100),
-				new DateTime());
-		publicacionVO.getSkills().add(new Skill(null, "Cobol", true));
+		publicacionVO = new PublicacionVOBuilder()
+				.setTitulo("NODE JS 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.PART_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.setSkills(Lists.newArrayList(
+						new Skill(null, "Cobol", true))
+						)
+				.build();
 		publicacion.add(publicacionVO);
 		
 		// se obtiene la categoria mas seleccionada
-		Publicacion r = reporteController.obtenerPublicacionMasAccesible();
+		PublicacionVO r = reporteController.obtenerPublicacionMasAccesible();
 		Assert.assertTrue(Objects.nonNull(r) && r.getTitulo().equalsIgnoreCase("Publicacion3"));	
 	}
 	
@@ -195,52 +211,59 @@ class ReporteControllerTests {
 		
 		// se agregan publicaciones
 		// sin skills
-		Publicacion publicacionVO = new Publicacion(empresaVO,
-				"Publicacion1", 
-				"Descripcion", 
-				Modalidad.FULL_TIME, 
-				TipoTrabajo.PRESENCIAL, 
-				"Locacion",
-				"Petrolera",
-				Double.valueOf(100),
-				new DateTime());
+		PublicacionVO publicacionVO = new PublicacionVOBuilder()
+				.setTitulo("NODE JS 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.PART_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.build();
 		publicacion.add(publicacionVO);
 		
 		
 		//con 6 skills
-		publicacionVO = new Publicacion(empresaVO,
-				"Publicacion2", 
-				"Descripcion", 
-				Modalidad.PART_TIME, 
-				TipoTrabajo.REMOTO, 
-				"Locacion",
-				"Petrolera",
-				Double.valueOf(100),
-				new DateTime());
-		publicacionVO.getSkills().add(new Skill(null, "Java", true));
-		publicacionVO.getSkills().add(new Skill(null, "React", true));
-		publicacionVO.getSkills().add(new Skill(null, "Springboot", true));
-		publicacionVO.getSkills().add(new Skill(null, "Hibernate", true));
-		publicacionVO.getSkills().add(new Skill(null, "JavaScript", true));
-		publicacionVO.getSkills().add(new Skill(null, "Chakra", true));
+		publicacionVO = new PublicacionVOBuilder()
+				.setTitulo("Fullstack 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.PART_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.setSkills(Lists.newArrayList(
+						new Skill(null, "Cobol", true),
+						new Skill(null, "Java", true),
+						new Skill(null, "React", true),
+						new Skill(null, "Chakra", true),
+						new Skill(null, "Javascript", true),
+						new Skill(null, "SQL", true))
+						)
+				.build();
 		publicacion.add(publicacionVO);
 		
 		// con 2 skills
-		publicacionVO = new Publicacion(empresaVO,
-				"Publicacion3", 
-				"Descripcion", 
-				Modalidad.PART_TIME, 
-				TipoTrabajo.REMOTO, 
-				"Locacion",
-				"Petrolera",
-				Double.valueOf(100),
-				new DateTime());
-		publicacionVO.getSkills().add(new Skill(null, "Java", true));
-		publicacionVO.getSkills().add(new Skill(null, "Cobol", true));
+		publicacionVO = new PublicacionVOBuilder()
+				.setTitulo("Fullstack 100% remoto")
+				.setDescripcion("Breve descripcion")
+				.setCategoria("Petrolera")
+				.setModalidad(Modalidad.PART_TIME)
+				.setTipoTrabajo(TipoTrabajo.REMOTO)
+				.setLocacion("Buenos Aires")
+				.setSueldoOfrecido(Double.valueOf(100))
+				.setFechaVigencia(Instant.now().toDateTime())
+				.setSkills(Lists.newArrayList(
+						new Skill(null, "Cobol", true),
+						new Skill(null, "SQL", true))
+						)
+				.build();
 		publicacion.add(publicacionVO);
 		
 		// se obtiene la categoria mas seleccionada
-		Publicacion r = reporteController.obtenerPublicacionMasExigente();
+		PublicacionVO r = reporteController.obtenerPublicacionMasExigente();
 		Assert.assertTrue(Objects.nonNull(r) && r.getTitulo().equalsIgnoreCase("Publicacion2"));
 		
 	}

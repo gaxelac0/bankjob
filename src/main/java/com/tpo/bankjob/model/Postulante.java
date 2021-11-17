@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.tpo.bankjob.model.dao.PostulanteDao;
 import com.tpo.bankjob.model.utils.View;
+import com.tpo.bankjob.model.vo.PublicacionVO;
 
 @Component
 @Entity
@@ -230,7 +231,7 @@ public class Postulante implements UserDetails {
 	}
 
 	@JsonView(View.Internal.class)
-	public void notificarNovedadesIntereses(List<Publicacion> novedadesIntereses) {
+	public void notificarNovedadesIntereses(List<PublicacionVO> novedadesIntereses) {
 		// TODO #ADOO STRATEGY + ADAPTER
 		
 	}

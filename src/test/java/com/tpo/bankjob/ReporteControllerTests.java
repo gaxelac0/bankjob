@@ -45,14 +45,14 @@ class ReporteControllerTests {
 	public void obtenerPublicacionMasSolicitadaTest() {
 
 		// se registra y logea la empresa para poder agregar una publicacion
-		Empresa empresaVO = new Empresa(UUID.randomUUID().toString(),
-				"empresa1",
+		Empresa empresa = new Empresa(UUID.randomUUID().toString(),
+				"empresa12",
 				"1234");
-		empresaRepository.saveAndFlush(empresaVO);
-		RequestTokenService.setRequestToken(empresaVO.getId());
+		empresaRepository.saveAndFlush(empresa);
+		RequestTokenService.setRequestToken(empresa.getId());
 		
 		// se agrega la publicacion
-		Publicacion publicacionVO = new Publicacion(empresaVO,
+		Publicacion pub = new Publicacion(empresa,
 				"Titulo", 
 				"Descripcion", 
 				Modalidad.FULL_TIME, 
@@ -60,24 +60,21 @@ class ReporteControllerTests {
 				"Locacion",
 				"Categoria",
 				Double.valueOf(100),
-				new DateTime());
-		publicacion.add(publicacionVO);
+				new DateTime(2030,11,1,1,1));
 		
-		// Se registra y logea un postulante
-		String idPostulante = postulante.register(new Postulante("", 
-				"postulanteTest44", 
-				"1234",
-				"Postu",
-				"Lante",
-				Instant.now().toDateTime()));
-		RequestTokenService.setRequestToken(idPostulante);
-		
-		// el postulante se postula a la publicacion antes creada
-		postulacion.add(new Postulacion(new PostulacionKeyWrapper(idPostulante, publicacionVO.getId())));
-		
+		publicacion.add(pub);
+			
+		// Se registran y logean nuevos postulantes
+		registrarYPostularPostulante("postulanteTest449", pub);
+		registrarYPostularPostulante("postulanteTest450", pub);
+		registrarYPostularPostulante("postulanteTest451", pub);
+		registrarYPostularPostulante("postulanteTest452", pub);
+		registrarYPostularPostulante("postulanteTest453", pub);
+		registrarYPostularPostulante("postulanteTest454", pub);
+				
 		// se obtiene la unica publicacion con postulacion
-		Publicacion r = reporteController.obtenerPublicacionMasSolicitada("112021");
-		Assert.assertTrue(Objects.nonNull(r) && r.getId().equalsIgnoreCase(publicacionVO.getId()));
+		Publicacion r = reporteController.obtenerPublicacionMasSolicitada("112021");		
+		Assert.assertTrue(Objects.nonNull(r) && r.getId().equalsIgnoreCase(pub.getId()));
 	}
 	
 	@Test
@@ -139,7 +136,7 @@ class ReporteControllerTests {
 		
 		// se agregan publicaciones
 		// sin tareas ni skills pero no remoto ni parttime
-		Publicacion publicacionVO = new Publicacion(empresaVO,
+		Publicacion pub = new Publicacion(empresaVO,
 				"Publicacion1", 
 				"Descripcion", 
 				Modalidad.FULL_TIME, 
@@ -148,10 +145,10 @@ class ReporteControllerTests {
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
-		publicacion.add(publicacionVO);
+		publicacion.add(pub);
 		
 		// remoto y partime pero con dos skills requeridos
-		publicacionVO = new Publicacion(empresaVO,
+		pub = new Publicacion(empresaVO,
 				"Publicacion2", 
 				"Descripcion", 
 				Modalidad.PART_TIME, 
@@ -160,12 +157,12 @@ class ReporteControllerTests {
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
-		publicacionVO.getSkills().add(new Skill(null, "Java", true));
-		publicacionVO.getSkills().add(new Skill(null, "React", true));
-		publicacion.add(publicacionVO);
+		pub.getSkills().add(new Skill(null, "Java", true));
+		pub.getSkills().add(new Skill(null, "React", true));
+		publicacion.add(pub);
 		
 		// remoto y part time con 1 skill requerido
-		publicacionVO = new Publicacion(empresaVO,
+		pub = new Publicacion(empresaVO,
 				"Publicacion3", 
 				"Descripcion", 
 				Modalidad.PART_TIME, 
@@ -174,8 +171,8 @@ class ReporteControllerTests {
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
-		publicacionVO.getSkills().add(new Skill(null, "Cobol", true));
-		publicacion.add(publicacionVO);
+		pub.getSkills().add(new Skill(null, "Cobol", true));
+		publicacion.add(pub);
 		
 		// se obtiene la categoria mas seleccionada
 		Publicacion r = reporteController.obtenerPublicacionMasAccesible();
@@ -187,15 +184,15 @@ class ReporteControllerTests {
 	public void obtenerPublicacionMasExigenteTest() {
 		
 		// se agrega la empresa
-		Empresa empresaVO = new Empresa(UUID.randomUUID().toString(),
+		Empresa empresa = new Empresa(UUID.randomUUID().toString(),
 				"empresa1",
 				"1234");
-		empresaRepository.saveAndFlush(empresaVO);
-		RequestTokenService.setRequestToken(empresaVO.getId());
+		empresaRepository.saveAndFlush(empresa);
+		RequestTokenService.setRequestToken(empresa.getId());
 		
 		// se agregan publicaciones
 		// sin skills
-		Publicacion publicacionVO = new Publicacion(empresaVO,
+		Publicacion pub = new Publicacion(empresa,
 				"Publicacion1", 
 				"Descripcion", 
 				Modalidad.FULL_TIME, 
@@ -204,11 +201,11 @@ class ReporteControllerTests {
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
-		publicacion.add(publicacionVO);
+		publicacion.add(pub);
 		
 		
 		//con 6 skills
-		publicacionVO = new Publicacion(empresaVO,
+		pub = new Publicacion(empresa,
 				"Publicacion2", 
 				"Descripcion", 
 				Modalidad.PART_TIME, 
@@ -217,16 +214,16 @@ class ReporteControllerTests {
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
-		publicacionVO.getSkills().add(new Skill(null, "Java", true));
-		publicacionVO.getSkills().add(new Skill(null, "React", true));
-		publicacionVO.getSkills().add(new Skill(null, "Springboot", true));
-		publicacionVO.getSkills().add(new Skill(null, "Hibernate", true));
-		publicacionVO.getSkills().add(new Skill(null, "JavaScript", true));
-		publicacionVO.getSkills().add(new Skill(null, "Chakra", true));
-		publicacion.add(publicacionVO);
+		pub.getSkills().add(new Skill(null, "Java", true));
+		pub.getSkills().add(new Skill(null, "React", true));
+		pub.getSkills().add(new Skill(null, "Springboot", true));
+		pub.getSkills().add(new Skill(null, "Hibernate", true));
+		pub.getSkills().add(new Skill(null, "JavaScript", true));
+		pub.getSkills().add(new Skill(null, "Chakra", true));
+		publicacion.add(pub);
 		
 		// con 2 skills
-		publicacionVO = new Publicacion(empresaVO,
+		pub = new Publicacion(empresa,
 				"Publicacion3", 
 				"Descripcion", 
 				Modalidad.PART_TIME, 
@@ -235,13 +232,31 @@ class ReporteControllerTests {
 				"Petrolera",
 				Double.valueOf(100),
 				new DateTime());
-		publicacionVO.getSkills().add(new Skill(null, "Java", true));
-		publicacionVO.getSkills().add(new Skill(null, "Cobol", true));
-		publicacion.add(publicacionVO);
+		pub.getSkills().add(new Skill(null, "Java", true));
+		pub.getSkills().add(new Skill(null, "Cobol", true));
+		publicacion.add(pub);
 		
 		// se obtiene la categoria mas seleccionada
 		Publicacion r = reporteController.obtenerPublicacionMasExigente();
 		Assert.assertTrue(Objects.nonNull(r) && r.getTitulo().equalsIgnoreCase("Publicacion2"));
 		
+	}
+	
+	/**
+	 * Registra un usuario postulante y lo postula a la publicacion
+	 * @param userid
+	 * @param pub
+	 */
+	private void registrarYPostularPostulante(String userid, Publicacion pub) {
+		String idPostulante = postulante.register(new Postulante("", 
+				userid, 
+				"1234",
+				"Postu",
+				"Lante",
+				Instant.now().toDateTime()));
+		RequestTokenService.setRequestToken(idPostulante);
+		
+		// el postulante se postula a la publicacion antes creada
+		postulacion.add(new Postulacion(new PostulacionKeyWrapper(idPostulante, pub.getId())));
 	}
 }

@@ -109,7 +109,7 @@ public class PostulacionControllerTest {
 		
 		// Se registra y logea un postulante sin skills
 		String idPostulante = postulante.register(new Postulante("", 
-				"postulanteTest44", 
+				"postulanteTest440", 
 				"1234",
 				"Postu",
 				"Lante",

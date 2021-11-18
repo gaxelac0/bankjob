@@ -1,3 +1,15 @@
+Colecciones de Request en Postman
+Ubicadas en .\postman\collections
+
+Utilizamos Gradle, para iniciar el servidor se puede hacer a través del comando en el root del proyecto:
+.\gradlew.bat bootRun -PjvmArgs="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000" --refresh-dependencies
+
+También se puede hacer importandolo como proyecto de Gradle en Eclipse y ejecutar el BankjobApplication.java con Run As.. o Debug As.. Java Application.
+
+Para ejecutar las colecciones de test se puede hacer a través del comando: 
+.\gradlew.bat test
+
+
 List of Endpoints
 
 | # | URI                                | Method | Details                                                                              				| Comentarios |

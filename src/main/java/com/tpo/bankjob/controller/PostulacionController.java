@@ -6,7 +6,6 @@ import static lombok.AccessLevel.PRIVATE;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +20,7 @@ import com.tpo.bankjob.model.utils.View;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Controller
+@RestController
 @RequestMapping("/postulacion")
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)

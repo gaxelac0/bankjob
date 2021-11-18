@@ -40,7 +40,6 @@ import com.tpo.bankjob.model.state.EstadoPublicacion;
 import com.tpo.bankjob.model.state.EstadoPublicacionAbierto;
 import com.tpo.bankjob.model.state.EstadoPublicacionCerrado;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.PublicacionVO;
 
 @Component
 @Entity
@@ -295,7 +294,7 @@ public class Publicacion implements Serializable, IObservable {
 		empresa.notificarPostulacion(this);
 	}
 	
-	public PublicacionVO add(PublicacionVO publicacionVO) {		
+	public Publicacion add(Publicacion publicacionVO) {		
 		return publicacionDao.add(publicacionVO);
 	}
 
@@ -307,8 +306,8 @@ public class Publicacion implements Serializable, IObservable {
 		return publicacionDao.findAll();
 	}
 
-	public boolean open(Publicacion publicacion) {
-		return publicacionDao.open(publicacion);
+	public Publicacion open(Publicacion publicacionVO) {
+		return publicacionDao.open(publicacionVO);
 	}
 		
 	public void transicionarPublicaciones() {

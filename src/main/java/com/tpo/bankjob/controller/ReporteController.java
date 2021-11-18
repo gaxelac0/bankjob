@@ -18,11 +18,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.base.Supplier;
@@ -34,12 +34,11 @@ import com.tpo.bankjob.model.TipoTrabajo;
 import com.tpo.bankjob.model.exception.BadFormatException;
 import com.tpo.bankjob.model.exception.InvalidActionException;
 import com.tpo.bankjob.model.utils.View;
-import com.tpo.bankjob.model.vo.PublicacionVO;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Controller
+@RestController
 @RequestMapping("/reporte")
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
@@ -62,12 +61,12 @@ public class ReporteController {
 							.filter(p -> !p.getIntereses().isEmpty())
 							.collect(Collectors.toList())) {
 			
-			List<PublicacionVO> result = new ArrayList<>();
+			List<Publicacion> result = new ArrayList<>();
 			p.getIntereses()
 			.stream()
 			.map(i -> i.getCategoria())
 			.forEach(c -> {
-				List<PublicacionVO> l = publicacionController.getPublicacionesByCategoria(c);
+				List<Publicacion> l = publicacionController.getPublicacionesByCategoria(c);
 				if(!l.isEmpty()) result.add(l.get(0));
 			});
 			
@@ -116,7 +115,7 @@ public class ReporteController {
 			@PathVariable int cantidad) {
 		
 		HashMap<String, Long> map = new HashMap<>();
-		for(PublicacionVO pub: publicacionController.getPublicaciones()) {
+		for(Publicacion pub: publicacionController.getPublicaciones()) {
 			String catego = pub.getCategoria();
 			if(!map.containsKey(catego)) map.put(catego, 1L);
 			else map.put(catego, map.get(catego)+1L);
@@ -131,10 +130,11 @@ public class ReporteController {
 		return result;
 	}
 	
+	@JsonView(View.Internal.class)
 	@GetMapping("/03")
-	public @ResponseBody PublicacionVO obtenerPublicacionMasAccesible() {
+	public @ResponseBody Publicacion obtenerPublicacionMasAccesible() {
 		
-		List<PublicacionVO> list = publicacionController.getPublicaciones().stream()
+		List<Publicacion> list = publicacionController.getPublicaciones().stream()
 		.filter((p) -> p.getTipoTrabajo().equals(TipoTrabajo.REMOTO))
 		.filter((p) -> p.getModalidad().equals(Modalidad.PART_TIME))
 		.collect(Collectors.toList());
@@ -143,8 +143,8 @@ public class ReporteController {
 			throw new InvalidActionException("No hay publicaciones en el sistema.");
 		
 		list.sort(Comparator.comparing(p -> 
-					((PublicacionVO)p).getTareas().size()
-					+ ((PublicacionVO)p).getSkills()
+					((Publicacion)p).getTareas().size()
+					+ ((Publicacion)p).getSkills()
 					.stream()
 					.filter(s -> s.isMandatory())
 					.collect(Collectors.toList()).size()
@@ -153,10 +153,11 @@ public class ReporteController {
 		
 		return list.get(0);
 	}
-
+	
+	@JsonView(View.Internal.class)
 	@GetMapping("/04")
-	public @ResponseBody PublicacionVO obtenerPublicacionMasExigente() {
-		List<PublicacionVO> list = publicacionController.getPublicaciones();
+	public @ResponseBody Publicacion obtenerPublicacionMasExigente() {
+		List<Publicacion> list = publicacionController.getPublicaciones();
 		if(list.isEmpty())
 			throw new InvalidActionException("No hay publicaciones en el sistema.");
 		list.sort(Comparator.comparing(p -> ((Publicacion)p).getSkills().size()).reversed());
